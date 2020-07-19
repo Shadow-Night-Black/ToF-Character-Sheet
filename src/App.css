@@ -1,38 +1,76 @@
-.App {
-  text-align: center;
+.Power {
+  background-color: lightcoral;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Power-Header {
+  background-color: coral;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Finesse {
+  background-color: lightgrey;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Finesse-Header {
+  background-color: grey;
+}
+
+.Resilience {
+  background-color: lightsalmon;
+}
+
+.Resilience-Header {
+  background-color: rgb(224, 115, 37);
+}
+
+.Intellect {
+  background-color: rgb(231, 3, 231);
+}
+
+.Intellect-Header {
+  background-color: purple;
+}
+
+.Wits-Header {
+  background-color: rgb(226, 223, 223);
+}
+
+.Wits {
+  background-color: whitesmoke;
+}
+
+.Presence-Header {
+  background-color: gold;
+}
+
+.Presence {
+  background-color: lightyellow;
+}
+
+.attribute-widget {
+  min-width: 300px;
+}
+
+.attribute-header {
+  background-color: rgb(223, 152, 0);
+}
+
+.attribute-header,
+.attribute-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: nowrap;
 }
 
-.App-link {
-  color: #61dafb;
+.attribute-title {
+  width: 90px;
+  flex: 0 0 auto
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.attribute-base,
+.attribute-skills,
+.attribute-total,
+.attribute-dice {
+  width: 40px;
+  flex: 1 0 auto;
+  text-align: center;
+  
 }
