@@ -14,7 +14,10 @@ export function GetDiceFromAttributeTotal(value: number): Dice.Model[] {
 }
 
 export function GetDefaultAttributes(): Model[] {
-  return [
+  return defaults;
+}
+
+  const defaults = [
     {
       name: "Power",
       shortName: "Pow",
@@ -52,4 +55,3 @@ export function GetDefaultAttributes(): Model[] {
       isPhysical: true,
     },
   ];
-}

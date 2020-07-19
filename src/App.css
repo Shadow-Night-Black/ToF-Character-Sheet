@@ -1,3 +1,7 @@
+.right {
+  float: right;
+}
+
 .Power {
   background-color: lightcoral;
 }
@@ -69,6 +73,23 @@
 .attribute-skills,
 .attribute-total,
 .attribute-dice {
+  width: 40px;
+  flex: 1 0 auto;
+  text-align: center;
+  
+}
+
+
+.skill-header,
+.skill-row {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.skill-name,
+.skill-level,
+.skill-attribute,
+.skill-dice {
   width: 40px;
   flex: 1 0 auto;
   text-align: center;

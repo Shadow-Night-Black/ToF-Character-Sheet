@@ -1,17 +1,18 @@
 
-import React, { FunctionComponent} from "react";
+import React, { FunctionComponent, ReactNode} from "react";
 
 
 type WidgetProps = {
-    header:string,
+    header:() => ReactNode,
+    body:() => ReactNode
     className?:string
 };
 
-export const Widget: FunctionComponent<WidgetProps> =  ({header, className, children}) => 
+export const Widget: FunctionComponent<WidgetProps> =  ({header, body, className, children}) => 
   <div className={"card " + className}> 
-  <div className="card-header">{header} </div>
+  <div className="card-header">{header()} </div>
   <div className="card-body">
-    {children}
+    {body()}
     </div>
   </div>
 
