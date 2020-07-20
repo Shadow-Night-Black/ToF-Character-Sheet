@@ -1,5 +1,4 @@
 import { Totem } from "./Totem";
-import { Dice } from "./Dice";
 import { Skill } from "./Skill";
 import { Attribute, GetDefaultAttributes } from "./Attribute";
 import { GetDefaultFated } from "./Fated";
@@ -13,7 +12,7 @@ export interface Model {
   bio: string;
   attributes: Map<Attribute, number>;
   skills: Skill[];
-  totem:Totem
+  totem: Totem;
 }
 
 export function GetAttributeTotal(
@@ -21,7 +20,8 @@ export function GetAttributeTotal(
   attribute: Attribute
 ): number {
   return (
-    (character.attributes.get(attribute) ?? 0) + GetAttributeSkillTotal(character, attribute)
+    (character.attributes.get(attribute) || 0) +
+    GetAttributeSkillTotal(character, attribute)
   );
 }
 
@@ -60,8 +60,6 @@ export function CreateTestCharacter(): Model {
         name: "Parkour",
       },
     ],
-    totem: { blessings: GetDefaultBlessings()
-    , fated:GetDefaultFated()[0]}
-    
+    totem: { blessings: GetDefaultBlessings(), fated: GetDefaultFated()[0] },
   };
 }

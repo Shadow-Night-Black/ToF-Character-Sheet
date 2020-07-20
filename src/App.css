@@ -78,6 +78,10 @@
   text-align: center;
 }
 
+.skill-widget {
+  min-width: 350px;
+}
+
 .skill-header,
 .skill-row {
   display: flex;

@@ -31,6 +31,7 @@ function App() {
       ></Widget>
       <Widget
         header={() => <SkillsWidgetHeader />}
+        className="skill-widget"
         body={() => (
           <SkillsWidgetBody character={state.character}></SkillsWidgetBody>
         )}
