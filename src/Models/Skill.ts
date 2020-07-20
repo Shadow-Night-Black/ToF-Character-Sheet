@@ -1,12 +1,12 @@
-import * as Attribute from "./Attribute";
 import * as Dice from "./Dice";
+import { Attribute } from "./Attribute";
 
-export interface Model {
+export interface Skill {
   name: string;
   level: number;
-  attribute: Attribute.Model;
+  attribute: Attribute;
 }
 
-export function ToDie(model: Model) {
+export function ToDie(model: Skill) {
   return Dice.CreateDie(model.level * 2);
 }

@@ -1,7 +1,14 @@
 import * as Character from "./Models/Character";
 import { Widget } from "./UI/Widget";
-import { AttributesWidgetBody, AttributeWidgetHeader } from "./UI/AttributesWidget";
+import {
+  AttributesWidgetBody,
+  AttributeWidgetHeader,
+} from "./UI/AttributesWidget";
 import { SkillsWidgetBody, SkillsWidgetHeader } from "./UI/SkillsWidget";
+import {
+  BlessingsWidgetBody,
+  BlessingsWidgetHeader,
+} from "./UI/TotemWidget";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -23,10 +30,15 @@ function App() {
         )}
       ></Widget>
       <Widget
-        header={() => <SkillsWidgetHeader/>}
+        header={() => <SkillsWidgetHeader />}
         body={() => (
           <SkillsWidgetBody character={state.character}></SkillsWidgetBody>
         )}
+      ></Widget>
+      <Widget
+        className= "blessing-widget"
+        header={() => <BlessingsWidgetHeader character={state.character}/>}
+        body={() => <BlessingsWidgetBody character={state.character} />}
       ></Widget>
     </div>
   );

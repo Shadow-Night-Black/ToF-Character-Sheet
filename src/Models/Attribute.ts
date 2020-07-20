@@ -1,19 +1,19 @@
 import * as Dice from "./Dice";
 
-export interface Model {
+export interface Attribute {
   name: string;
   shortName: string;
   isPhysical: boolean;
   isMental: boolean;
 }
 
-export function GetDiceFromAttributeTotal(value: number): Dice.Model[] {
+export function GetDiceFromAttributeTotal(value: number): Dice.Dice[] {
   if (value <= 0) return [Dice.CreateDie(2)];
   if (value >= 36) return [Dice.CreateDie(20)];
   return [Dice.CreateDie(Math.ceil(value / 6) * 2)];
 }
 
-export function GetDefaultAttributes(): Model[] {
+export function GetDefaultAttributes(): Attribute[] {
   return defaults;
 }
 

@@ -9,7 +9,7 @@ type WidgetProps = {
 };
 
 export const Widget: FunctionComponent<WidgetProps> =  ({header, body, className, children}) => 
-  <div className={"card " + className}> 
+  <div className={`card ${className?className:""}`}> 
   <div className="card-header">{header()} </div>
   <div className="card-body">
     {body()}
