@@ -19,7 +19,7 @@ const state = {
 
 function App() {
   return (
-    <div className="App card-deck">
+    <div className="App card-columns">
       <Widget
         header={() => <AttributeWidgetHeader />}
         className="attribute-widget"

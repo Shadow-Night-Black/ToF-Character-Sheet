@@ -17,11 +17,13 @@ export interface Model {
 
 export function GetAttributeTotal(
   character: Model,
-  attribute: Attribute
+  attribute: Attribute,
+  inCity:boolean
 ): number {
   return (
     (character.attributes.get(attribute) || 0) +
     GetAttributeSkillTotal(character, attribute)
+    + (!inCity && character.totem.fated.attribute == attribute ? 6 : 0)
   );
 }
 

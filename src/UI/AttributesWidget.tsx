@@ -27,23 +27,22 @@ export const AttributesWidgetBody: FunctionComponent<AttributeProps> = ({
     {[...character.attributes].map(([attribute, base]) => (
       <div className="attribute-row">
         <div className={`attribute-title ${attribute.name}-Header`}>
-          {" "}
-          {attribute.name}{" "}
+          {attribute.name}
         </div>
         <div className={`attribute-base ${attribute.name}`}> {base} </div>
         <div className={`attribute-skills ${attribute.name}`}>
-          {" "}
-          {Character.GetAttributeSkillTotal(character, attribute)}{" "}
+          {Character.GetAttributeSkillTotal(character, attribute)}
         </div>
         <div className={`attribute-total ${attribute.name}`}>
-          {" "}
-          {Character.GetAttributeTotal(character, attribute)}{" "}
+          {Character.GetAttributeTotal(character, attribute, true)}
         </div>
         <div className={`attribute-dice ${attribute.name}`}>
-          {" "}
           {Attribute.GetDiceFromAttributeTotal(
-            Character.GetAttributeTotal(character, attribute)
-          ).map((d) => d.name)}{" "}
+            Character.GetAttributeTotal(character, attribute, true)
+          ).map((d) => d.name)} {" "}
+           ({Attribute.GetDiceFromAttributeTotal(
+            Character.GetAttributeTotal(character, attribute, false)
+          ).map((d) => d.name)}) 
         </div>
       </div>
     ))}
