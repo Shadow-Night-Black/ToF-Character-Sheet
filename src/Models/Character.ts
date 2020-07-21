@@ -23,7 +23,7 @@ export function GetAttributeTotal(
   return (
     (character.attributes.get(attribute) || 0) +
     GetAttributeSkillTotal(character, attribute)
-    + (!inCity && character.totem.fated.attribute == attribute ? 6 : 0)
+    + (!inCity && character.totem.fated.attribute === attribute ? 6 : 0)
   );
 }
 

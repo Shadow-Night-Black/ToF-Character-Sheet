@@ -7,7 +7,7 @@ type SkillProps = {
 };
 
 
-export const SkillsWidgetHeader: FunctionComponent<object> = ({}) => (
+export const SkillsWidgetHeader: FunctionComponent<object> = () => (
   <div className="header">
     Skills 
     <button className="btn-primary btn-sm btn right"> Add New </button>

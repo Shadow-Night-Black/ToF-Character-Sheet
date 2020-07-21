@@ -1,12 +1,12 @@
 import * as Character from "../Models/Character";
-import * as Attribute from "../Models/Attribute"
+import * as Attribute from "../Models/Attribute";
 import React, { FunctionComponent } from "react";
 
 type AttributeProps = {
   character: Character.Model;
 };
 
-export const AttributeWidgetHeader: FunctionComponent<object> = ({}) => (
+export const AttributeWidgetHeader: FunctionComponent<object> = () => (
   <div className="header">
     Attributes
     <button className="btn-primary btn-sm btn right"> Edit </button>
@@ -39,14 +39,14 @@ export const AttributesWidgetBody: FunctionComponent<AttributeProps> = ({
         <div className={`attribute-dice ${attribute.name}`}>
           {Attribute.GetDiceFromAttributeTotal(
             Character.GetAttributeTotal(character, attribute, true)
-          ).map((d) => d.name)} {" "}
-           ({Attribute.GetDiceFromAttributeTotal(
+          ).map((d) => d.name)}{" "}
+          (
+          {Attribute.GetDiceFromAttributeTotal(
             Character.GetAttributeTotal(character, attribute, false)
-          ).map((d) => d.name)}) 
+          ).map((d) => d.name)}
+          )
         </div>
       </div>
     ))}
   </div>
 );
-  
-
