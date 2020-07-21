@@ -2,13 +2,14 @@
 import React, { FunctionComponent, ReactNode} from "react";
 
 
-type WidgetProps = {
+export interface Widget  {
     header:() => ReactNode,
     body:() => ReactNode
-    className?:string
+    className:string
 };
 
-export const Widget: FunctionComponent<WidgetProps> =  ({header, body, className, children}) => 
+
+export const Widget: FunctionComponent<Widget> =  ({header, body, className, children}) => 
   <div className={`card ${className?className:""}`}> 
   <div className="card-header">{header()} </div>
   <div className="card-body">

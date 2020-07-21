@@ -1,9 +1,5 @@
 import { Widget } from "./UI/Widgets/Widget";
 import {
-  AttributesWidgetBody,
-  AttributeWidgetHeader,
-} from "./UI/Widgets/AttributesWidget";
-import {
   SkillsWidgetBody,
   SkillsWidgetHeader,
 } from "./UI/Widgets/SkillsWidget";
@@ -16,13 +12,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Dialog } from "./UI/Dialogs/Dialog";
 import { CreateTestCharacter, Character } from "./Models/Character";
+import { AttributeWidget } from "./UI/Widgets/AttributesWidget";
 
-interface state {
-  ui: uiState;
+export interface AppState {
+  ui: UiState;
   character: Character;
 }
 
-interface uiState {
+interface UiState {
   dialog: {
     showDialog: boolean;
     onClose: () => void;
@@ -30,7 +27,7 @@ interface uiState {
   };
 }
 
-class App extends React.Component<{}, state> {
+class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
 
@@ -46,14 +43,14 @@ class App extends React.Component<{}, state> {
     };
 
     this.updateUI = this.updateUI.bind(this);
-    this.showDialog = this.showDialog.bind(this);
+    this.openDialog = this.openDialog.bind(this);
   }
 
-  updateUI(map: (newUi: uiState) => uiState) {
+  updateUI(map: (newUi: UiState) => UiState) {
     this.setState((state) => ({ ...state, ui: map(state.ui) }));
   }
 
-  showDialog(node: ReactNode, onclose?: () => void) {
+  openDialog(node: ReactNode, onclose?: () => void) {
     this.updateUI((uiState) => ({
       ...uiState,
       dialog: {
@@ -74,18 +71,9 @@ class App extends React.Component<{}, state> {
     return (
       <div className="App card-columns">
         <Widget
-          header={() => (
-            <AttributeWidgetHeader
-              openDialog={this.showDialog}
-              character={this.state.character}
-            />
-          )}
+          header={AttributeWidget(this.state, this.openDialog).header}
           className="attribute-widget"
-          body={() => (
-            <AttributesWidgetBody
-              character={this.state.character}
-            ></AttributesWidgetBody>
-          )}
+          body={AttributeWidget(this.state, this.openDialog).body}
         ></Widget>
         <Widget
           header={() => <SkillsWidgetHeader />}
@@ -107,9 +95,7 @@ class App extends React.Component<{}, state> {
           onClose={this.state.ui.dialog.onClose}
           isOpen={this.state.ui.dialog.showDialog}
         >
-          <div>
-            <h3>Test!</h3>
-          </div>
+          {this.state.ui.dialog.node}
         </Dialog>
       </div>
     );

@@ -1,6 +1,8 @@
 import * as Character from "../../Models/Character";
 import * as Attribute from "../../Models/Attribute";
 import React, { FunctionComponent, ReactNode } from "react";
+import { Widget } from "./Widget";
+import { AppState } from "../../App";
 
 type AttributeProps = {
   character: Character.Character;
@@ -12,14 +14,22 @@ type AttributeHeaderProps = {
   openDialog: (node:ReactNode) => void;
 }
 
-export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({openDialog, character}) => (
+export function AttributeWidget(state:AppState, openDialog:(node:ReactNode) => void):Widget {
+  return { body: () => (<AttributesWidgetBody character={state.character}/>),
+  header: () => (<AttributeWidgetHeader character={state.character} openDialog={openDialog}/>),
+  className: "attributes-widget"
+
+  }
+}
+
+const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({openDialog, character}) => (
   <div className="header">
     Attributes
-    <button className="btn-primary btn-sm btn right" onClick={() => {openDialog("Test")}}> Edit </button>
+    <button className="btn-primary btn-sm btn right" onClick={() => {openDialog(<AttributesWidgetBody character={character} />)}}> Edit </button>
   </div>
 );
 
-export const AttributesWidgetBody: FunctionComponent<AttributeProps> = ({
+const AttributesWidgetBody: FunctionComponent<AttributeProps> = ({
   character,
 }) => (
   <div className="attribute-grid">
