@@ -1,11 +1,11 @@
-import * as Character from "../Models/Character";
+import * as Character from "../../Models/Character";
 import React, { FunctionComponent } from "react";
 
 type BlessingsBodyProps = {
-  character: Character.Model;
+  character: Character.Character;
 };
 type BlessingsHeaderProps = {
-  character: Character.Model;
+  character: Character.Character;
 };
 
 export const BlessingsWidgetHeader: FunctionComponent<BlessingsHeaderProps> = ({

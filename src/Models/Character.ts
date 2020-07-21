@@ -4,7 +4,7 @@ import { Attribute, GetDefaultAttributes } from "./Attribute";
 import { GetDefaultFated } from "./Fated";
 import { GetDefaultBlessings } from "./Blessings";
 
-export interface Model {
+export interface Character {
   name: string;
   player: string;
   age: number;
@@ -16,7 +16,7 @@ export interface Model {
 }
 
 export function GetAttributeTotal(
-  character: Model,
+  character: Character,
   attribute: Attribute,
   inCity:boolean
 ): number {
@@ -28,7 +28,7 @@ export function GetAttributeTotal(
 }
 
 export function GetAttributeSkillTotal(
-  character: Model,
+  character: Character,
   attribute: Attribute
 ): number {
   return character.skills.reduce(
@@ -37,7 +37,7 @@ export function GetAttributeSkillTotal(
   );
 }
 
-export function CreateTestCharacter(): Model {
+export function CreateTestCharacter(): Character {
   return {
     name: "test",
     player: "test",

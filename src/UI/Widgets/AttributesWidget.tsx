@@ -1,15 +1,21 @@
-import * as Character from "../Models/Character";
-import * as Attribute from "../Models/Attribute";
-import React, { FunctionComponent } from "react";
+import * as Character from "../../Models/Character";
+import * as Attribute from "../../Models/Attribute";
+import React, { FunctionComponent, ReactNode } from "react";
 
 type AttributeProps = {
-  character: Character.Model;
+  character: Character.Character;
+
 };
 
-export const AttributeWidgetHeader: FunctionComponent<object> = () => (
+type AttributeHeaderProps = {
+  character: Character.Character;
+  openDialog: (node:ReactNode) => void;
+}
+
+export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({openDialog, character}) => (
   <div className="header">
     Attributes
-    <button className="btn-primary btn-sm btn right"> Edit </button>
+    <button className="btn-primary btn-sm btn right" onClick={() => {openDialog("Test")}}> Edit </button>
   </div>
 );
 

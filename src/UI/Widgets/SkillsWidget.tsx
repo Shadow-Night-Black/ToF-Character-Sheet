@@ -1,9 +1,9 @@
-import * as Character from "../Models/Character";
-import * as Skill from "../Models/Skill";
+import * as Character from "../../Models/Character";
+import * as Skill from "../../Models/Skill";
 import React, { FunctionComponent, Fragment } from "react";
 
 type SkillProps = {
-  character: Character.Model;
+  character: Character.Character;
 };
 
 
