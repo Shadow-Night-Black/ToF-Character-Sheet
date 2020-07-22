@@ -1,36 +1,68 @@
-import * as Character from "../../Models/Character";
-import * as Attribute from "../../Models/Attribute";
-import React, { FunctionComponent, ReactNode } from "react";
-import { Widget } from "./Widget";
-import { AppState } from "../../App";
+import {
+  Attribute,
+  GetDefaultAttributes,
+  GetDiceFromAttributeTotal,
+} from "../../Models/Attribute";
+import React, {
+  FunctionComponent,
+  ReactNode,
+  ReactElement,
+  Fragment,
+} from "react";
+import {
+  Character,
+  GetAttributeSkillTotal,
+  GetAttributeTotal,
+} from "../../Models/Character";
+import { Update } from "../../App";
 
-type AttributeProps = {
-  character: Character.Character;
+type AttributeBodyProps = {
+  character: Character;
+  editMode: boolean;
+  updateCharacter: Update<Character>;
+};
 
+type AttributeRowProps = {
+  character: Character;
+  attribute: Attribute;
+  editMode: boolean;
+  updateCharacter: Update<Character>;
 };
 
 type AttributeHeaderProps = {
-  character: Character.Character;
-  openDialog: (node:ReactNode) => void;
-}
+  character: Character;
+  openDialog: (node: ReactNode) => void;
+  updateCharacter: Update<Character>;
+};
 
-export function AttributeWidget(state:AppState, openDialog:(node:ReactNode) => void):Widget {
-  return { body: () => (<AttributesWidgetBody character={state.character}/>),
-  header: () => (<AttributeWidgetHeader character={state.character} openDialog={openDialog}/>),
-  className: "attributes-widget"
-
-  }
-}
-
-const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({openDialog, character}) => (
+export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({
+  openDialog,
+  updateCharacter,
+  character,
+}) => (
   <div className="header">
     Attributes
-    <button className="btn-primary btn-sm btn right" onClick={() => {openDialog(<AttributesWidgetBody character={character} />)}}> Edit </button>
+    <button
+      className="btn-primary btn-sm btn right"
+      onClick={() => {
+        openDialog(
+          <AttributesWidgetBody
+            editMode={true}
+            character={character}
+            updateCharacter={updateCharacter}
+          />
+        );
+      }}
+    >
+      Edit
+    </button>
   </div>
 );
 
-const AttributesWidgetBody: FunctionComponent<AttributeProps> = ({
+export const AttributesWidgetBody: FunctionComponent<AttributeBodyProps> = ({
   character,
+  editMode,
+  updateCharacter,
 }) => (
   <div className="attribute-grid">
     <div className="attribute-header">
@@ -40,29 +72,68 @@ const AttributesWidgetBody: FunctionComponent<AttributeProps> = ({
       <div className="attribute-total"> Total </div>
       <div className="attribute-dice"> Dice </div>
     </div>
-    {[...character.attributes].map(([attribute, base]) => (
-      <div className="attribute-row">
-        <div className={`attribute-title ${attribute.name}-Header`}>
-          {attribute.name}
-        </div>
-        <div className={`attribute-base ${attribute.name}`}> {base} </div>
-        <div className={`attribute-skills ${attribute.name}`}>
-          {Character.GetAttributeSkillTotal(character, attribute)}
-        </div>
-        <div className={`attribute-total ${attribute.name}`}>
-          {Character.GetAttributeTotal(character, attribute, true)}
-        </div>
-        <div className={`attribute-dice ${attribute.name}`}>
-          {Attribute.GetDiceFromAttributeTotal(
-            Character.GetAttributeTotal(character, attribute, true)
-          ).map((d) => d.name)}{" "}
-          (
-          {Attribute.GetDiceFromAttributeTotal(
-            Character.GetAttributeTotal(character, attribute, false)
-          ).map((d) => d.name)}
-          )
-        </div>
-      </div>
+    {GetDefaultAttributes().map((attribute) => (
+      <AttributeWidgetRow
+        updateCharacter={updateCharacter}
+        editMode={editMode}
+        attribute={attribute}
+        character={character}
+      />
     ))}
   </div>
 );
+
+const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
+  attribute,
+  character,
+  editMode,
+  updateCharacter,
+}) => {
+  const baseValue = character.attributes.get(attribute);
+  let baseAttributeElement: ReactElement;
+  if (editMode)
+    baseAttributeElement = (
+      <input
+        type="number"
+        defaultValue={baseValue}
+        onChange={(event) => {
+          const newVal = event.target.valueAsNumber;
+          if (!isNaN(newVal))
+            updateCharacter((oldChar: Character) => {
+              const newAttributes = new Map(oldChar.attributes);
+              newAttributes.set(attribute, newVal);
+              return { ...oldChar, attributes: newAttributes };
+            });
+        }}
+      />
+    );
+  else baseAttributeElement = <Fragment> {baseValue} </Fragment>;
+
+  return (
+    <div className="attribute-row">
+      <div className={`attribute-title ${attribute.name}-Header`}>
+        {attribute.name}
+      </div>
+      <div className={`attribute-base ${attribute.name}`}>
+        {" "}
+        {baseAttributeElement}{" "}
+      </div>
+      <div className={`attribute-skills ${attribute.name}`}>
+        {GetAttributeSkillTotal(character, attribute)}
+      </div>
+      <div className={`attribute-total ${attribute.name}`}>
+        {GetAttributeTotal(character, attribute, true)}
+      </div>
+      <div className={`attribute-dice ${attribute.name}`}>
+        {GetDiceFromAttributeTotal(
+          GetAttributeTotal(character, attribute, true)
+        ).map((d) => d.name)}{" "}
+        (
+        {GetDiceFromAttributeTotal(
+          GetAttributeTotal(character, attribute, false)
+        ).map((d) => d.name)}
+        )
+      </div>
+    </div>
+  );
+};

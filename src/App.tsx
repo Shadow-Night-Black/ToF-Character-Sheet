@@ -10,21 +10,19 @@ import {
 import React, { ReactNode } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Dialog } from "./UI/Dialogs/Dialog";
+import { Dialog, DialogState } from "./UI/Dialogs/Dialog";
 import { CreateTestCharacter, Character } from "./Models/Character";
-import { AttributeWidget } from "./UI/Widgets/AttributesWidget";
+import { AttributeWidgetHeader, AttributesWidgetBody } from "./UI/Widgets/AttributesWidget";
 
 export interface AppState {
   ui: UiState;
   character: Character;
 }
 
+export type Update<T> = (update:(old: T) => T) => void;
+
 interface UiState {
-  dialog: {
-    showDialog: boolean;
-    onClose: () => void;
-    node?: ReactNode;
-  };
+  dialog: DialogState
 }
 
 class App extends React.Component<{}, AppState> {
@@ -35,7 +33,7 @@ class App extends React.Component<{}, AppState> {
       character: CreateTestCharacter(),
       ui: {
         dialog: {
-          showDialog: false,
+          isOpen: false,
           onClose: () => {},
           node: null,
         },
@@ -44,23 +42,28 @@ class App extends React.Component<{}, AppState> {
 
     this.updateUI = this.updateUI.bind(this);
     this.openDialog = this.openDialog.bind(this);
+    this.updateCharacter = this.updateCharacter.bind(this)
   }
 
   updateUI(map: (newUi: UiState) => UiState) {
     this.setState((state) => ({ ...state, ui: map(state.ui) }));
   }
 
-  openDialog(node: ReactNode, onclose?: () => void) {
+  updateCharacter(map: (newCharacter: Character) => Character) {
+    this.setState((state) => ({ ...state, character: map(state.character) }));
+  }
+
+  openDialog(node: ReactNode, oncloseCallback?: () => void) {
     this.updateUI((uiState) => ({
       ...uiState,
       dialog: {
-        showDialog: true,
+        isOpen: true,
         node: node,
         onClose: () => {
-          if (onclose) onclose();
+          if (oncloseCallback) oncloseCallback();
           this.updateUI((uiState) => ({
             ...uiState,
-            dialog: { showDialog: false, node: null, onClose: () => {} },
+            dialog: { isOpen: false, node: null, onClose: () => {} },
           }));
         },
       },
@@ -71,32 +74,33 @@ class App extends React.Component<{}, AppState> {
     return (
       <div className="App card-columns">
         <Widget
-          header={AttributeWidget(this.state, this.openDialog).header}
+          header={
+            <AttributeWidgetHeader
+              character={this.state.character}
+              openDialog={this.openDialog}
+              updateCharacter={this.updateCharacter}
+            />
+          }
           className="attribute-widget"
-          body={AttributeWidget(this.state, this.openDialog).body}
+          body={<AttributesWidgetBody updateCharacter={this.updateCharacter} editMode={false} character={this.state.character} />}
         ></Widget>
         <Widget
-          header={() => <SkillsWidgetHeader />}
+          header={<SkillsWidgetHeader />}
           className="skill-widget"
-          body={() => (
+          body={
             <SkillsWidgetBody
               character={this.state.character}
             ></SkillsWidgetBody>
-          )}
+          }
         ></Widget>
         <Widget
           className="blessing-widget"
-          header={() => (
-            <BlessingsWidgetHeader character={this.state.character} />
-          )}
-          body={() => <BlessingsWidgetBody character={this.state.character} />}
+          header={<BlessingsWidgetHeader character={this.state.character} />}
+          body={<BlessingsWidgetBody character={this.state.character} />}
         ></Widget>
         <Dialog
-          onClose={this.state.ui.dialog.onClose}
-          isOpen={this.state.ui.dialog.showDialog}
-        >
-          {this.state.ui.dialog.node}
-        </Dialog>
+        dialogState={this.state.ui.dialog}
+        />
       </div>
     );
   }
