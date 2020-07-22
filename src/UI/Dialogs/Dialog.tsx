@@ -9,7 +9,7 @@ type DialogProps = {
 
 export type DialogState = {
     isOpen: boolean;
-    onClose: () => void;
+    close: () => void;
     node: (character:Character) => ReactNode;
 }
 
@@ -27,21 +27,22 @@ export const Dialog: FunctionComponent<DialogProps> = ({
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
               aria-label="Close"
+              onClick={dialogState.close}
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div className="modal-body">{dialogState.node(character)}</div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-primary" onClick={dialogState.onClose}>
+            <button type="button" className="btn btn-primary" onClick={dialogState.close}>
               Save changes
             </button>
             <button
               type="button"
               className="btn btn-secondary"
               data-dismiss="modal"
+              onClick={dialogState.close}
             >
               Close
             </button>

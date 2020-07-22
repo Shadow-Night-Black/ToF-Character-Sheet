@@ -34,7 +34,7 @@ class App extends React.Component<{}, AppState> {
       ui: {
         dialog: {
           isOpen: false,
-          onClose: () => {},
+          close: () => {},
           node: () => null,
         },
       },
@@ -59,11 +59,11 @@ class App extends React.Component<{}, AppState> {
       dialog: {
         isOpen: true,
         node: node,
-        onClose: () => {
+        close: () => {
           if (oncloseCallback) oncloseCallback();
           this.updateUI((uiState) => ({
             ...uiState,
-            dialog: { isOpen: false, node: () => null, onClose: () => {} },
+            dialog: { isOpen: false, node: () => null, close: () => {} },
           }));
         },
       },
