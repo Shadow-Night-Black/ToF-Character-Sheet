@@ -35,7 +35,7 @@ class App extends React.Component<{}, AppState> {
         dialog: {
           isOpen: false,
           onClose: () => {},
-          node: null,
+          node: () => null,
         },
       },
     };
@@ -53,7 +53,7 @@ class App extends React.Component<{}, AppState> {
     this.setState((state) => ({ ...state, character: map(state.character) }));
   }
 
-  openDialog(node: ReactNode, oncloseCallback?: () => void) {
+  openDialog(node: (char:Character) => ReactNode, oncloseCallback?: () => void) {
     this.updateUI((uiState) => ({
       ...uiState,
       dialog: {
@@ -63,7 +63,7 @@ class App extends React.Component<{}, AppState> {
           if (oncloseCallback) oncloseCallback();
           this.updateUI((uiState) => ({
             ...uiState,
-            dialog: { isOpen: false, node: null, onClose: () => {} },
+            dialog: { isOpen: false, node: () => null, onClose: () => {} },
           }));
         },
       },
@@ -99,6 +99,7 @@ class App extends React.Component<{}, AppState> {
           body={<BlessingsWidgetBody character={this.state.character} />}
         ></Widget>
         <Dialog
+        character={this.state.character}
         dialogState={this.state.ui.dialog}
         />
       </div>

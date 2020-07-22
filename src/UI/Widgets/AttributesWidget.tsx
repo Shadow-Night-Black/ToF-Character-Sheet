@@ -31,24 +31,23 @@ type AttributeRowProps = {
 
 type AttributeHeaderProps = {
   character: Character;
-  openDialog: (node: ReactNode) => void;
+  openDialog: (node:(char:Character) => ReactNode) => void;
   updateCharacter: Update<Character>;
 };
 
 export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({
   openDialog,
   updateCharacter,
-  character,
 }) => (
   <div className="header">
     Attributes
     <button
       className="btn-primary btn-sm btn right"
       onClick={() => {
-        openDialog(
+        openDialog((char) =>
           <AttributesWidgetBody
             editMode={true}
-            character={character}
+            character={char}
             updateCharacter={updateCharacter}
           />
         );

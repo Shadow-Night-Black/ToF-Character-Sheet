@@ -1,19 +1,21 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import "./Dialog.css";
+import { Character } from "../../Models/Character";
 
 type DialogProps = {
   dialogState: DialogState
+  character: Character
 };
 
 export type DialogState = {
     isOpen: boolean;
     onClose: () => void;
-    node?: ReactNode;
+    node: (character:Character) => ReactNode;
 }
 
 export const Dialog: FunctionComponent<DialogProps> = ({
   dialogState,
-  children,
+  character,
 }) => {
   if (!dialogState.isOpen) return null;
   return (
@@ -31,7 +33,7 @@ export const Dialog: FunctionComponent<DialogProps> = ({
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body">{dialogState.node}</div>
+          <div className="modal-body">{dialogState.node(character)}</div>
           <div className="modal-footer">
             <button type="button" className="btn btn-primary" onClick={dialogState.onClose}>
               Save changes
