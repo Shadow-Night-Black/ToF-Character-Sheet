@@ -28,7 +28,7 @@ export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({
       className='btn-primary btn-sm btn right'
       onClick={() => {
         openDialog((char, update: Update<Character>) => (
-          <AttributesWidgetBody {...{editMode:true, character:char, updateCharacter:update}} />
+          <AttributesWidgetBody {...{ editMode: true, character: char, updateCharacter: update }} />
         ));
       }}
     >
@@ -74,6 +74,7 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
       <input
         type='number'
         defaultValue={baseValue}
+        className={`attribute-base`}
         onChange={(event) => {
           const newVal = event.target.valueAsNumber;
           if (!isNaN(newVal))
