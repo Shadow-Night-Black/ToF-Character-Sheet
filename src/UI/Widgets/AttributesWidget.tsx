@@ -2,6 +2,7 @@ import { Attribute, GetDefaultAttributes, GetDiceFromAttributeTotal } from "../.
 import React, { FunctionComponent, ReactElement, Fragment } from "react";
 import { Character, GetAttributeSkillTotal, GetAttributeTotal } from "../../Models/Character";
 import { Update, openDialog } from "../../App";
+import { WidgetConstructor } from "./Widget";
 
 type AttributeBodyProps = {
   character: Character;
@@ -21,14 +22,22 @@ type AttributeHeaderProps = {
   openDialog: openDialog;
 };
 
-export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({ openDialog }) => (
+export const AttributeWidgetConstructor:WidgetConstructor = ({appControls, state}) => {
+return ({
+  header: <WidgetHeader character={state.character} openDialog={appControls.openDialog} />,
+  body: <WidgetBody character={state.character} updateCharacter={appControls.updateCharacter} editMode={false} />,
+  className: "attribute-widget"
+})
+}
+
+const WidgetHeader: FunctionComponent<AttributeHeaderProps> = ({ openDialog }) => (
   <div className='header'>
     Attributes
     <button
       className='btn-primary btn-sm btn right'
       onClick={() => {
         openDialog((char, update: Update<Character>) => (
-          <AttributesWidgetBody {...{ editMode: true, character: char, updateCharacter: update }} />
+          <WidgetBody {...{ editMode: true, character: char, updateCharacter: update }} />
         ));
       }}
     >
@@ -37,7 +46,9 @@ export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({
   </div>
 );
 
-export const AttributesWidgetBody: FunctionComponent<AttributeBodyProps> = ({
+export const className = "attribute-widget"
+
+export const WidgetBody: FunctionComponent<AttributeBodyProps> = ({
   character,
   editMode,
   updateCharacter,

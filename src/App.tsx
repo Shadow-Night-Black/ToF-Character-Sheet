@@ -1,21 +1,25 @@
-import { Widget } from "./UI/Widgets/Widget";
-import { SkillsWidgetBody, SkillsWidgetHeader } from "./UI/Widgets/SkillsWidget";
-import { BlessingsWidgetBody, BlessingsWidgetHeader } from "./UI/Widgets/TotemWidget";
+import { Widget, WidgetProps } from "./UI/Widgets/Widget";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Dialog, DialogParams, DialogBody } from "./UI/Dialogs/Dialog";
 import { CreateTestCharacter, Character } from "./Models/Character";
-import { AttributeWidgetHeader, AttributesWidgetBody } from "./UI/Widgets/AttributesWidget";
+import { AttributeWidgetConstructor } from "./UI/Widgets/AttributesWidget";
+import { SkillsWidgetConstructor } from "./UI/Widgets/SkillsWidget";
+import { BlessingsWidgetConstructor } from "./UI/Widgets/TotemWidget";
 
 export interface AppState {
   ui: UIState;
   character: Character;
 }
 
-export type Update<T> = (update: (old: T) => T) => void;
+export interface AppControls {
+  openDialog: openDialog;
+  updateCharacter: Update<Character>;
+}
 
 export type openDialog = (node: DialogBody, oncloseCallback?: () => void) => void;
+export type Update<T> = (update: (old: T) => T) => void;
 
 export interface UIState {
   dialog: DialogParams;
@@ -56,30 +60,22 @@ class App extends React.Component<{}, AppState> {
     }));
   };
 
+  AppControls: AppControls = {
+    openDialog: this.openDialog,
+    updateCharacter: this.updateCharacter,
+  };
+
+  WidgetProps: ()=> WidgetProps  = () => ({
+    appControls: this.AppControls,
+    state: this.state
+  })
+
   render() {
     return (
       <div className='App card-columns'>
-        <Widget
-          header={<AttributeWidgetHeader character={this.state.character} openDialog={this.openDialog} />}
-          className='attribute-widget'
-          body={
-            <AttributesWidgetBody
-              updateCharacter={this.updateCharacter}
-              editMode={false}
-              character={this.state.character}
-            />
-          }
-        ></Widget>
-        <Widget
-          header={<SkillsWidgetHeader />}
-          className='skill-widget'
-          body={<SkillsWidgetBody character={this.state.character}></SkillsWidgetBody>}
-        ></Widget>
-        <Widget
-          className='blessing-widget'
-          header={<BlessingsWidgetHeader character={this.state.character} />}
-          body={<BlessingsWidgetBody character={this.state.character} />}
-        ></Widget>
+        <Widget {...AttributeWidgetConstructor(this.WidgetProps())}></Widget>
+        <Widget {...SkillsWidgetConstructor(this.WidgetProps())}></Widget>
+        <Widget {...BlessingsWidgetConstructor(this.WidgetProps())}></Widget>
         <Dialog
           updateUI={this.updateUI}
           saveChanges={this.updateCharacter}

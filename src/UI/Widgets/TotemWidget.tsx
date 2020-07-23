@@ -1,5 +1,6 @@
 import * as Character from "../../Models/Character";
 import React, { FunctionComponent } from "react";
+import { WidgetConstructor } from "./Widget";
 
 type BlessingsBodyProps = {
   character: Character.Character;
@@ -8,7 +9,15 @@ type BlessingsHeaderProps = {
   character: Character.Character;
 };
 
-export const BlessingsWidgetHeader: FunctionComponent<BlessingsHeaderProps> = ({
+export const BlessingsWidgetConstructor:WidgetConstructor = ({state}) => 
+({
+  header: <WidgetHeader character={state.character} />,
+  body: <WidgetBody character={state.character} />,
+  className: "blessing-widget"
+})
+
+
+const WidgetHeader: FunctionComponent<BlessingsHeaderProps> = ({
   character,
 }) => (
   <div className={`header ${character.totem.fated.attribute.name}`}>
@@ -17,7 +26,7 @@ export const BlessingsWidgetHeader: FunctionComponent<BlessingsHeaderProps> = ({
   </div>
 );
 
-export const BlessingsWidgetBody: FunctionComponent<BlessingsBodyProps> = ({
+const WidgetBody: FunctionComponent<BlessingsBodyProps> = ({
   character,
 }) => (
   <div className="blessing-grid">
