@@ -67,7 +67,8 @@ class App extends React.Component<{}, AppState> {
 
   WidgetProps: ()=> WidgetProps  = () => ({
     appControls: this.AppControls,
-    state: this.state
+    state: this.state,
+    editMode: false,
   })
 
   render() {

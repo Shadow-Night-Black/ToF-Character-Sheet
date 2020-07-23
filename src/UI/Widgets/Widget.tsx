@@ -12,7 +12,7 @@ export interface Widget {
 export interface WidgetProps {
   appControls: AppControls,
   state: AppState,
-  editMode?:boolean
+  editMode:boolean
 }
 
 export const Widget: FunctionComponent<Widget> = ({
