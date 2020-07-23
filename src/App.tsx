@@ -40,20 +40,17 @@ class App extends React.Component<{}, AppState> {
       },
     };
 
-    this.updateUI = this.updateUI.bind(this);
-    this.openDialog = this.openDialog.bind(this);
-    this.updateCharacter = this.updateCharacter.bind(this)
   }
 
-  updateUI(map: (newUi: UiState) => UiState) {
+  updateUI = (map: (newUi: UiState) => UiState) => {
     this.setState((state) => ({ ...state, ui: map(state.ui) }));
   }
 
-  updateCharacter(map: (newCharacter: Character) => Character) {
+  updateCharacter = (map: (newCharacter: Character) => Character) => {
     this.setState((state) => ({ ...state, character: map(state.character) }));
   }
 
-  openDialog(node: (char:Character) => ReactNode, oncloseCallback?: () => void) {
+  openDialog = (node: (char:Character) => ReactNode, oncloseCallback?: () => void) => {
     this.updateUI((uiState) => ({
       ...uiState,
       dialog: {
