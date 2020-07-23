@@ -1,20 +1,7 @@
-import {
-  Attribute,
-  GetDefaultAttributes,
-  GetDiceFromAttributeTotal,
-} from "../../Models/Attribute";
-import React, {
-  FunctionComponent,
-  ReactNode,
-  ReactElement,
-  Fragment,
-} from "react";
-import {
-  Character,
-  GetAttributeSkillTotal,
-  GetAttributeTotal,
-} from "../../Models/Character";
-import { Update } from "../../App";
+import { Attribute, GetDefaultAttributes, GetDiceFromAttributeTotal } from "../../Models/Attribute";
+import React, { FunctionComponent, ReactElement, Fragment } from "react";
+import { Character, GetAttributeSkillTotal, GetAttributeTotal } from "../../Models/Character";
+import { Update, openDialog } from "../../App";
 
 type AttributeBodyProps = {
   character: Character;
@@ -31,26 +18,18 @@ type AttributeRowProps = {
 
 type AttributeHeaderProps = {
   character: Character;
-  openDialog: (node:(char:Character) => ReactNode) => void;
-  updateCharacter: Update<Character>;
+  openDialog: openDialog;
 };
 
-export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({
-  openDialog,
-  updateCharacter,
-}) => (
-  <div className="header">
+export const AttributeWidgetHeader: FunctionComponent<AttributeHeaderProps> = ({ openDialog }) => (
+  <div className='header'>
     Attributes
     <button
-      className="btn-primary btn-sm btn right"
+      className='btn-primary btn-sm btn right'
       onClick={() => {
-        openDialog((char) =>
-          <AttributesWidgetBody
-            editMode={true}
-            character={char}
-            updateCharacter={updateCharacter}
-          />
-        );
+        openDialog((char, update: Update<Character>) => (
+          <AttributesWidgetBody {...{editMode:true, character:char, updateCharacter:update}} />
+        ));
       }}
     >
       Edit
@@ -63,13 +42,13 @@ export const AttributesWidgetBody: FunctionComponent<AttributeBodyProps> = ({
   editMode,
   updateCharacter,
 }) => (
-  <div className="attribute-grid">
-    <div className="attribute-header">
-      <div className="attribute-title"> Name </div>
-      <div className="attribute-base"> Base </div>
-      <div className="attribute-skills"> Skills </div>
-      <div className="attribute-total"> Total </div>
-      <div className="attribute-dice"> Dice </div>
+  <div className='attribute-grid'>
+    <div className='attribute-header'>
+      <div className='attribute-title'> Name </div>
+      <div className='attribute-base'> Base </div>
+      <div className='attribute-skills'> Skills </div>
+      <div className='attribute-total'> Total </div>
+      <div className='attribute-dice'> Dice </div>
     </div>
     {GetDefaultAttributes().map((attribute) => (
       <AttributeWidgetRow
@@ -93,7 +72,7 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
   if (editMode)
     baseAttributeElement = (
       <input
-        type="number"
+        type='number'
         defaultValue={baseValue}
         onChange={(event) => {
           const newVal = event.target.valueAsNumber;
@@ -109,29 +88,14 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
   else baseAttributeElement = <Fragment> {baseValue} </Fragment>;
 
   return (
-    <div className="attribute-row">
-      <div className={`attribute-title ${attribute.name}-Header`}>
-        {attribute.name}
-      </div>
-      <div className={`attribute-base ${attribute.name}`}>
-        {" "}
-        {baseAttributeElement}{" "}
-      </div>
-      <div className={`attribute-skills ${attribute.name}`}>
-        {GetAttributeSkillTotal(character, attribute)}
-      </div>
-      <div className={`attribute-total ${attribute.name}`}>
-        {GetAttributeTotal(character, attribute, true)}
-      </div>
+    <div className='attribute-row'>
+      <div className={`attribute-title ${attribute.name}-Header`}>{attribute.name}</div>
+      <div className={`attribute-base ${attribute.name}`}> {baseAttributeElement} </div>
+      <div className={`attribute-skills ${attribute.name}`}>{GetAttributeSkillTotal(character, attribute)}</div>
+      <div className={`attribute-total ${attribute.name}`}>{GetAttributeTotal(character, attribute, true)}</div>
       <div className={`attribute-dice ${attribute.name}`}>
-        {GetDiceFromAttributeTotal(
-          GetAttributeTotal(character, attribute, true)
-        ).map((d) => d.name)}{" "}
-        (
-        {GetDiceFromAttributeTotal(
-          GetAttributeTotal(character, attribute, false)
-        ).map((d) => d.name)}
-        )
+        {GetDiceFromAttributeTotal(GetAttributeTotal(character, attribute, true)).map((d) => d.name)} (
+        {GetDiceFromAttributeTotal(GetAttributeTotal(character, attribute, false)).map((d) => d.name)})
       </div>
     </div>
   );
