@@ -6,8 +6,8 @@ import { Update, UIState } from "../../App";
 type DialogProps = {
   dialogState: DialogParams;
   character: Character;
-  saveChanges:Update<Character>
-  updateUI:Update<UIState>
+  saveChanges: Update<Character>;
+  updateUI: Update<UIState>;
 };
 
 export type DialogBody = (character: Character, update: Update<Character>) => ReactNode;
@@ -19,7 +19,7 @@ export type DialogParams = {
 };
 
 type DialogState = {
-  character: Character;
+  character?: Character;
 };
 
 export class Dialog extends React.Component<DialogProps, DialogState> {
@@ -30,27 +30,31 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
   }
 
   updateUICharacter: Update<Character> = (map) => {
-    this.setState((oldState) => ({ ...oldState, character: map(oldState.character) }));
+    this.setState((oldState) => ({ ...oldState, character: map(oldState.character ?? this.props.character) }));
   };
 
   saveChanges = () => {
-    this.props.saveChanges(() => this.state.character);
-    this.close();
-  }
+    if (this.state.character) {
+      const c = this.state.character;
+      this.props.saveChanges(() => c);
+      this.close();
+    }
+  };
 
-  close = 
-         () => {
-          if (this.props.dialogState.onClose) this.props.dialogState.onClose();
-          this.props.updateUI((uiState) => ({
-            ...uiState,
-            dialog: { isOpen: false, node: () => null, close: () => {} },
-          }));
-          this.updateUICharacter(() => this.props.character)
-        };
+  close = () => {
+    if (this.props.dialogState.onClose) this.props.dialogState.onClose();
+    this.props.updateUI((uiState) => ({
+      ...uiState,
+      dialog: { isOpen: false, node: () => null, close: () => {} },
+    }));
+    this.setState((oldState) => ({ ...oldState, character: undefined}));
+  };
 
   render() {
     const { dialogState } = this.props;
-    const { character } = this.state;
+    if (!this.state.character) this.updateUICharacter(() => this.props.character)
+    const  character  = this.state.character!;
+
     if (!dialogState.isOpen) return null;
     return (
       <div className='dialog-backdrop'>
