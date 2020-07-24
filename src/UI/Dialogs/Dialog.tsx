@@ -51,14 +51,16 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
 
   render() {
     const { dialogState } = this.props;
+    if (!dialogState.isOpen) return null;
+
     const { closed }  = this.state;
     let character = this.state.character;
-    if (closed && this.props.dialogState.isOpen) {
+
+    if (closed) {
       character = this.props.model.character;
-      this.setState({...this.state, closed:false})
+      this.setState((old) => ({...old, closed:false}))
     }
 
-    if (!dialogState.isOpen) return null;
     return (
       <div className='dialog-backdrop'>
         <div className='modal-dialog' role='document'>

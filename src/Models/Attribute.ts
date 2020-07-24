@@ -1,6 +1,9 @@
 import * as Dice from "./Dice";
+import { Identable } from "../Helpers/Collections";
 
-export interface Attribute {
+export type Attribute = Identable & AttributeData
+
+interface AttributeData {
   name: string;
   shortName: string;
   isPhysical: boolean;
@@ -17,7 +20,7 @@ export function GetDefaultAttributes(): Attribute[] {
   return defaults;
 }
 
-  const defaults = [
+  const defaults:Attribute[] = [
     {
       name: "Power",
       shortName: "Pow",
@@ -54,4 +57,4 @@ export function GetDefaultAttributes(): Attribute[] {
       isMental: false,
       isPhysical: true,
     },
-  ];
+  ].reduce((acc, a) => acc.concat({...a, key:acc.length + 1}), [] as Attribute[]);

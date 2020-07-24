@@ -101,7 +101,7 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
 
   return (
     <div className='attribute-row'>
-      <div className={`attribute-title ${attribute.name}-Header`}>{attribute.name}</div>
+      <div className={`attribute-title ${attribute.name}`}>{attribute.name}</div>
       <div className={`attribute-base ${attribute.name}`}> {baseAttributeElement} </div>
       <div className={`attribute-skills ${attribute.name}`}>{GetAttributeSkillTotal(character, attribute)}</div>
       <div className={`attribute-total ${attribute.name}`}>{GetAttributeTotal(character, attribute, true)}</div>

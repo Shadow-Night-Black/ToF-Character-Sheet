@@ -3,11 +3,12 @@ import { WidgetConstructor, WidgetProps } from "./Widget";
 import { Skill, ToDie, NewSkill } from "../../Models/Skill";
 import { AppControls } from "../../App";
 import "./SkillsWidget.css";
+import { GetDefaultAttributes } from "../../Models/Attribute";
 
 export const SkillsWidgetConstructor: WidgetConstructor = (props) => ({
   header: <WidgetHeader {...props} />,
   body: <WidgetBody {...props} />,
-  className: "skills-widget",
+  className: "skill-widget",
 });
 
 const WidgetHeader: FunctionComponent<WidgetProps> = ({ appControls, state }) => (
@@ -32,14 +33,17 @@ const WidgetHeader: FunctionComponent<WidgetProps> = ({ appControls, state }) =>
 
 const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appControls }) => {
   return (
-    <div className='skill-grid'>
-      <div className='skill-header'>
-        <div className='skill-name'>Skill Name</div>
-        <div className='skill-level'> Level </div>
-        <div className='skill-attribute'> Attribute </div>
-        <div className='skill-dice'> Dice </div>
-        <div className={"skill-delete"}> </div>
-      </div>
+    <table className='skill-grid table-condensed'>
+      <thead className='skill-header'>
+        <tr>
+        <th className='skill-name'>Skill Name</th>
+        <th className='skill-level'> Level </th>
+        <th className='skill-attribute'> Attribute </th>
+        <th className='skill-dice'> Dice </th>
+        <th className={"skill-delete"}> </th>
+</tr>
+      </thead>
+      <tbody>
       {state.character.skills.map((skill) =>
         editMode
           ? EditBodyRow(skill, {
@@ -60,19 +64,17 @@ const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appContro
           >
             Add new skill
           </button>
-        ) : (
-          null
-        )}
+        ) : null}
       </div>
-    </div>
+</tbody>
+    </table>
   );
 };
 
 function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.Element {
   return (
-    <div className='skill-row' key={skill.key}>
-      <div className={`skill-name`}>
-        {" "}
+    <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
+      <td className={`skill-name`}>
         <input
           className='skill-name-input'
           defaultValue={skill.name}
@@ -81,8 +83,8 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
             return update((old) => ({ ...old, name: val }));
           }}
         ></input>{" "}
-      </div>
-      <div className='skill-level'>
+      </td>
+      <td className='skill-level'>
         <input
           type='number'
           max={6}
@@ -97,29 +99,44 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
               });
           }}
         />
-      </div>
-      <div className={`skill-attribute`}> {skill.attribute.name} </div>
-      <div className={`skill-dice`}> {ToDie(skill).name} </div>
-      <div className={"skill-delete"}>
+      </td>
+      <td className={`skill-attribute`}>
+        <select  className="btn"
+          onChange={(e) => {
+            const newval = GetDefaultAttributes().find((a) => a.key === Number(e.target.value));
+            if (newval) update((old) => ({ ...old, attribute: newval }));
+          }}
+        >
+          {GetDefaultAttributes().map((a) => (
+            <option value={a.key} selected={skill.attribute === a}>{a.name} </option>
+          ))}
+        </select>
+      </td>
+      <td className={`skill-dice`}> {ToDie(skill).name} </td>
+      <td className={"skill-delete"}>
         <button
           type='button'
           className='btn btn-outline-danger btn-sm btn right'
-          onClick={() => remove((old) =>{return old === skill})}
+          onClick={() =>
+            remove((old) => {
+              return old === skill;
+            })
+          }
         >
           x
         </button>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }
 function WidgetBodyRow(skill: Skill): JSX.Element {
   return (
-    <div className='skill-row' key={skill.key}>
-      <div className={`skill-name`}> {skill.name} </div>
-      <div className={`skill-level`}> {skill.level} </div>
-      <div className={`skill-attribute`}> {skill.attribute.name} </div>
-      <div className={`skill-dice`}> {ToDie(skill).name} </div>
-      <div className={"skill-delete"}> </div>
-    </div>
+    <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
+      <td className={`skill-name`}> {skill.name} </td>
+      <td className={`skill-level`}> {skill.level} </td>
+      <td className={`skill-attribute`}> {skill.attribute.name} </td>
+      <td className={`skill-dice`}> {ToDie(skill).name} </td>
+      <td className={"skill-delete"}> </td>
+    </tr>
   );
 }

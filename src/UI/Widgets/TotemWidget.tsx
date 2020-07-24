@@ -20,7 +20,7 @@ export const BlessingsWidgetConstructor:WidgetConstructor = ({state}) =>
 const WidgetHeader: FunctionComponent<BlessingsHeaderProps> = ({
   character,
 }) => (
-  <div className={`header ${character.totem.fated.attribute.name}`}>
+  <div className={`header`}>
     Totem - {character.totem.fated.name}
     <button className="btn-primary btn-sm btn right"> Edit </button>
   </div>
@@ -37,7 +37,7 @@ const WidgetBody: FunctionComponent<BlessingsBodyProps> = ({
       <div className="blessing-effect"> Effect </div>
     </div>
     {character.totem.blessings.map((b) => (
-      <div className="blessing-row">
+      <div className={`blessing-row ${b.fated.attribute.name}`}>
         <div className="blessing-name"> {b.name} </div>
         <div className="blessing-fated"> {b.fated.name} </div>
         <div className="blessing-level"> {b.level} </div>

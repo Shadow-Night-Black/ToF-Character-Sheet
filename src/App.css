@@ -2,8 +2,17 @@
   float: right;
 }
 
+input {
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+
 .Power {
-  background-color: lightcoral;
+  background-color: hsl(0deg 86% 94%);
+  background:linear-gradient(to bottom, hsl(0deg 86% 94%), hsl(0deg 100% 90%))
 }
 
 .Power-Header {
@@ -27,7 +36,7 @@
 }
 
 .Intellect {
-  background-color: rgb(231, 3, 231);
+  background-color: hsl(263deg 92% 80%);
 }
 
 .Intellect-Header {
@@ -54,9 +63,9 @@
   min-width: 300px;
 }
 
-.attribute-header {
+/* .attribute-header {
   background-color: rgb(223, 152, 0);
-}
+} */
 
 .attribute-header,
 .attribute-row {

@@ -2,24 +2,11 @@
   min-width: 350px;
 }
 
-.skill-header,
-.skill-row {
-  display: flex;
-  flex-wrap: nowrap;
+.skill-grid {
+    width: 100%;
 }
-
-.skill-name,
-.skill-level,
-.skill-attribute,
-.skill-dice {
-  width: 40px;
-  flex: 1 0 auto;
-  text-align: center;
-}
-
 .skill-delete {
     width: 25px;
-    flex:0 0 auto
 }
 
 .skill-name-input {
