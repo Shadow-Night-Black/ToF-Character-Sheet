@@ -8,18 +8,24 @@ import { AttributeWidgetConstructor } from "./UI/Widgets/AttributesWidget";
 import { SkillsWidgetConstructor } from "./UI/Widgets/SkillsWidget";
 import { BlessingsWidgetConstructor } from "./UI/Widgets/TotemWidget";
 
-export interface AppState {
-  ui: UIState;
+type AppState= {
+  ui: UIState,
+  model: ModelState
+}
+
+export interface ModelState {
   character: Character;
 }
 
-export interface AppControls {
+export interface AppControls<T> {
   openDialog: openDialog;
-  updateCharacter: Update<Character>;
+  update: Update<T>;
+  remove: Delete<T> ;
 }
 
 export type openDialog = (node: DialogBody, oncloseCallback?: () => void) => void;
 export type Update<T> = (update: (old: T) => T) => void;
+export type Delete<T> = (update: (old: T) => boolean) => void;
 
 export interface UIState {
   dialog: DialogParams;
@@ -30,7 +36,7 @@ class App extends React.Component<{}, AppState> {
     super(props);
 
     this.state = {
-      character: CreateTestCharacter(),
+      model: { character: CreateTestCharacter()},
       ui: {
         dialog: {
           isOpen: false,
@@ -41,12 +47,16 @@ class App extends React.Component<{}, AppState> {
     };
   }
 
-  updateUI = (map: (newUi: UIState) => UIState) => {
+  updateUI:Update<UIState> = (map) => {
     this.setState((state) => ({ ...state, ui: map(state.ui) }));
   };
 
-  updateCharacter = (map: (newCharacter: Character) => Character) => {
-    this.setState((state) => ({ ...state, character: map(state.character) }));
+  updateCharacter:Update<Character> = (map) => {
+    this.updateModel((model) => ({ ...model, character: map(model.character) }));
+  };
+
+  updateModel:Update<ModelState> = (map) => {
+    this.setState((state) => ({ ...state, model: map(state.model) }));
   };
 
   openDialog: openDialog = (node, oncloseCallback?) => {
@@ -60,14 +70,15 @@ class App extends React.Component<{}, AppState> {
     }));
   };
 
-  AppControls: AppControls = {
+  AppControls: AppControls<Character> = {
     openDialog: this.openDialog,
-    updateCharacter: this.updateCharacter,
+    update: this.updateCharacter,
+    remove: () => {}
   };
 
   WidgetProps: ()=> WidgetProps  = () => ({
     appControls: this.AppControls,
-    state: this.state,
+    state: this.state.model,
     editMode: false,
   })
 
@@ -80,7 +91,7 @@ class App extends React.Component<{}, AppState> {
         <Dialog
           updateUI={this.updateUI}
           saveChanges={this.updateCharacter}
-          character={this.state.character}
+          model={this.state.model}
           dialogState={this.state.ui.dialog}
         />
       </div>

@@ -25,7 +25,7 @@ type AttributeHeaderProps = {
 export const AttributeWidgetConstructor:WidgetConstructor = ({appControls, state}) => {
 return ({
   header: <WidgetHeader character={state.character} openDialog={appControls.openDialog} />,
-  body: <WidgetBody character={state.character} updateCharacter={appControls.updateCharacter} editMode={false} />,
+  body: <WidgetBody character={state.character} updateCharacter={appControls.update} editMode={false} />,
   className: "attribute-widget"
 })
 }

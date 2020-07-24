@@ -1,11 +1,11 @@
 import React, { ReactNode } from "react";
 import "./Dialog.css";
 import { Character } from "../../Models/Character";
-import { Update, UIState } from "../../App";
+import { Update, UIState, ModelState } from "../../App";
 
 type DialogProps = {
   dialogState: DialogParams;
-  character: Character;
+  model: ModelState;
   saveChanges: Update<Character>;
   updateUI: Update<UIState>;
 };
@@ -18,27 +18,25 @@ export type DialogParams = {
   node: DialogBody;
 };
 
-type DialogState = {
-  character?: Character;
-};
+type DialogState = ModelState & {
+  closed:boolean
+}
+
 
 export class Dialog extends React.Component<DialogProps, DialogState> {
   constructor(props: DialogProps) {
     super(props);
 
-    this.state = { character: props.character };
+    this.state = {...props.model, closed: true };
   }
 
   updateUICharacter: Update<Character> = (map) => {
-    this.setState((oldState) => ({ ...oldState, character: map(oldState.character ?? this.props.character) }));
+    this.setState((oldState) => ({ ...oldState, character: map(oldState.character ?? this.props.model) }));
   };
 
   saveChanges = () => {
-    if (this.state.character) {
-      const c = this.state.character;
-      this.props.saveChanges(() => c);
+      this.props.saveChanges(() => this.state.character);
       this.close();
-    }
   };
 
   close = () => {
@@ -47,13 +45,18 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
       ...uiState,
       dialog: { isOpen: false, node: () => null, close: () => {} },
     }));
-    this.setState((oldState) => ({ ...oldState, character: undefined}));
+
+    this.setState((oldState) => ({...oldState, closed: true}));
   };
 
   render() {
     const { dialogState } = this.props;
-    if (!this.state.character) this.updateUICharacter(() => this.props.character)
-    const  character  = this.state.character!;
+    const { closed }  = this.state;
+    let character = this.state.character;
+    if (closed && this.props.dialogState.isOpen) {
+      character = this.props.model.character;
+      this.setState({...this.state, closed:false})
+    }
 
     if (!dialogState.isOpen) return null;
     return (

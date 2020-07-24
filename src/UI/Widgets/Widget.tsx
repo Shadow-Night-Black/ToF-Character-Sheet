@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import { AppControls, AppState } from "../../App";
+import { AppControls, ModelState } from "../../App";
+import { Character } from "../../Models/Character";
 
 export type WidgetConstructor = (props:WidgetProps) => Widget
 
@@ -10,8 +11,8 @@ export interface Widget {
 }
 
 export interface WidgetProps {
-  appControls: AppControls,
-  state: AppState,
+  appControls: AppControls<Character>,
+  state: ModelState,
   editMode:boolean
 }
 

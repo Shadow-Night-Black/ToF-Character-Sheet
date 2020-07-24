@@ -1,8 +1,8 @@
-import React, { FunctionComponent, ReactElement, Fragment } from "react";
+import React, { FunctionComponent } from "react";
 import { WidgetConstructor, WidgetProps } from "./Widget";
-import { Skill, ToDie } from "../../Models/Skill";
-import { Character } from "../../Models/Character";
+import { Skill, ToDie, NewSkill } from "../../Models/Skill";
 import { AppControls } from "../../App";
+import "./SkillsWidget.css";
 
 export const SkillsWidgetConstructor: WidgetConstructor = (props) => ({
   header: <WidgetHeader {...props} />,
@@ -19,7 +19,7 @@ const WidgetHeader: FunctionComponent<WidgetProps> = ({ appControls, state }) =>
         appControls.openDialog((character, updateCharacter) => (
           <WidgetBody
             editMode={true}
-            appControls={{ ...appControls, updateCharacter }}
+            appControls={{ ...appControls, update: updateCharacter }}
             state={{ ...state, character }}
           />
         ));
@@ -38,38 +38,88 @@ const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appContro
         <div className='skill-level'> Level </div>
         <div className='skill-attribute'> Attribute </div>
         <div className='skill-dice'> Dice </div>
+        <div className={"skill-delete"}> </div>
       </div>
-      {state.character.skills.map((skill) => WidgetBodyRow(skill, editMode, appControls))}
+      {state.character.skills.map((skill) =>
+        editMode
+          ? EditBodyRow(skill, {
+              ...appControls,
+              remove: (pred) => appControls.update((old) => ({ ...old, skills: old.skills.filter((s) => !pred(s)) })),
+              update: (map) =>
+                appControls.update((old) => ({ ...old, skills: old.skills.map((s) => (s !== skill ? s : map(s))) })),
+            })
+          : WidgetBodyRow(skill)
+      )}
+      <div className='skill-add'>
+        {editMode ? (
+          <button
+            className='btn btn-sm btn-success'
+            onClick={() => {
+              appControls.update((old) => ({ ...old, skills: old.skills.concat(NewSkill(state.character)) }));
+            }}
+          >
+            Add new skill
+          </button>
+        ) : (
+          null
+        )}
+      </div>
     </div>
   );
 };
-function WidgetBodyRow(skill: Skill, editMode: boolean, { updateCharacter }: AppControls): JSX.Element {
-  const baseValue = skill.level;
-  let skillLevelElement: ReactElement;
-  if (editMode)
-    skillLevelElement = (
-      <input
-        type='number'
-        max={6}
-        min={2}
-        defaultValue={baseValue}
-        className={`skill-level`}
-        onChange={(event) => {
-          const newVal = event.target.valueAsNumber;
-          if (!isNaN(newVal))
-            updateCharacter((oldChar: Character) => {
-              return { ...oldChar, skills: oldChar.skills.map((s) => (s === skill ? { ...skill, level: newVal } : s)) };
-            });
-        }}
-      />
-    );
-  else skillLevelElement = <Fragment> {baseValue} </Fragment>;
+
+function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.Element {
   return (
-    <div className='skill-row'>
-      <div className={`skill-name`}> {skill.name} </div>
-      <div className={`skill-level`}> {skillLevelElement} </div>
+    <div className='skill-row' key={skill.key}>
+      <div className={`skill-name`}>
+        {" "}
+        <input
+          className='skill-name-input'
+          defaultValue={skill.name}
+          onBlur={(e) => {
+            const val = e.target.value;
+            return update((old) => ({ ...old, name: val }));
+          }}
+        ></input>{" "}
+      </div>
+      <div className='skill-level'>
+        <input
+          type='number'
+          max={6}
+          min={2}
+          defaultValue={skill.level}
+          className={`skill-level`}
+          onChange={(event) => {
+            const newVal = event.target.valueAsNumber;
+            if (!isNaN(newVal))
+              update((old) => {
+                return { ...old, level: newVal };
+              });
+          }}
+        />
+      </div>
       <div className={`skill-attribute`}> {skill.attribute.name} </div>
       <div className={`skill-dice`}> {ToDie(skill).name} </div>
+      <div className={"skill-delete"}>
+        <button
+          type='button'
+          className='btn btn-outline-danger btn-sm btn right'
+          onClick={() => remove((old) =>{return old === skill})}
+        >
+          x
+        </button>
+      </div>
+    </div>
+  );
+}
+function WidgetBodyRow(skill: Skill): JSX.Element {
+  return (
+    <div className='skill-row' key={skill.key}>
+      <div className={`skill-name`}> {skill.name} </div>
+      <div className={`skill-level`}> {skill.level} </div>
+      <div className={`skill-attribute`}> {skill.attribute.name} </div>
+      <div className={`skill-dice`}> {ToDie(skill).name} </div>
+      <div className={"skill-delete"}> </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Totem } from "./Totem";
-import { Skill } from "./Skill";
+import { Skill, NewSkill } from "./Skill";
 import { Attribute, GetDefaultAttributes } from "./Attribute";
 import { GetDefaultFated } from "./Fated";
 import { GetDefaultBlessings } from "./Blessings";
@@ -15,53 +15,45 @@ export interface Character {
   totem: Totem;
 }
 
-export function GetAttributeTotal(
-  character: Character,
-  attribute: Attribute,
-  inCity:boolean
-): number {
+export function GetAttributeTotal(character: Character, attribute: Attribute, inCity: boolean): number {
   return (
     (character.attributes.get(attribute) || 0) +
-    GetAttributeSkillTotal(character, attribute)
-    + (!inCity && character.totem.fated.attribute === attribute ? 6 : 0)
+    GetAttributeSkillTotal(character, attribute) +
+    (!inCity && character.totem.fated.attribute === attribute ? 6 : 0)
   );
 }
 
-export function GetAttributeSkillTotal(
-  character: Character,
-  attribute: Attribute
-): number {
-  return character.skills.reduce(
-    (total, skill) => total + (skill.attribute === attribute ? skill.level : 0),
-    0
-  );
+export function GetAttributeSkillTotal(character: Character, attribute: Attribute): number {
+  return character.skills.reduce((total, skill) => total + (skill.attribute === attribute ? skill.level : 0), 0);
 }
+
+const defaultSkillsInfo = [
+  {
+    level: 6,
+    name: "Jumping",
+  },
+  {
+    level: 4,
+    name: "Climbing",
+  },
+  {
+    level: 3,
+    name: "Parkour",
+  },
+];
 
 export function CreateTestCharacter(): Character {
-  return {
+  const char: Character = {
     name: "test",
     player: "test",
     age: 3,
     gender: "test",
     bio: "test",
     attributes: new Map(GetDefaultAttributes().map((a) => [a, 6])),
-    skills: [
-      {
-        attribute: GetDefaultAttributes()[0],
-        level: 6,
-        name: "Jumping",
-      },
-      {
-        attribute: GetDefaultAttributes()[0],
-        level: 4,
-        name: "Climbing",
-      },
-      {
-        attribute: GetDefaultAttributes()[0],
-        level: 3,
-        name: "Parkour",
-      },
-    ],
+    skills: [],
     totem: { blessings: GetDefaultBlessings(), fated: GetDefaultFated()[0] },
   };
+  defaultSkillsInfo.forEach((x) => char.skills.push(NewSkill(char, x)));
+
+  return char;
 }
