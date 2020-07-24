@@ -3,6 +3,7 @@ import React, { FunctionComponent, ReactElement, Fragment } from "react";
 import { Character, GetAttributeSkillTotal, GetAttributeTotal } from "../../Models/Character";
 import { Update, openDialog } from "../../App";
 import { WidgetConstructor } from "./Widget";
+import "./AttributesWidget.css";
 
 type AttributeBodyProps = {
   character: Character;
@@ -22,13 +23,13 @@ type AttributeHeaderProps = {
   openDialog: openDialog;
 };
 
-export const AttributeWidgetConstructor:WidgetConstructor = ({appControls, state}) => {
-return ({
-  header: <WidgetHeader character={state.character} openDialog={appControls.openDialog} />,
-  body: <WidgetBody character={state.character} updateCharacter={appControls.update} editMode={false} />,
-  className: "attribute-widget"
-})
-}
+export const AttributeWidgetConstructor: WidgetConstructor = ({ appControls, state }) => {
+  return {
+    header: <WidgetHeader character={state.character} openDialog={appControls.openDialog} />,
+    body: <WidgetBody character={state.character} updateCharacter={appControls.update} editMode={false} />,
+    className: "attribute-widget",
+  };
+};
 
 const WidgetHeader: FunctionComponent<AttributeHeaderProps> = ({ openDialog }) => (
   <div className='header'>
@@ -46,30 +47,30 @@ const WidgetHeader: FunctionComponent<AttributeHeaderProps> = ({ openDialog }) =
   </div>
 );
 
-export const className = "attribute-widget"
+export const className = "attribute-widget";
 
-export const WidgetBody: FunctionComponent<AttributeBodyProps> = ({
-  character,
-  editMode,
-  updateCharacter,
-}) => (
-  <div className='attribute-grid'>
-    <div className='attribute-header'>
-      <div className='attribute-title'> Name </div>
-      <div className='attribute-base'> Base </div>
-      <div className='attribute-skills'> Skills </div>
-      <div className='attribute-total'> Total </div>
-      <div className='attribute-dice'> Dice </div>
-    </div>
-    {GetDefaultAttributes().map((attribute) => (
-      <AttributeWidgetRow
-        updateCharacter={updateCharacter}
-        editMode={editMode}
-        attribute={attribute}
-        character={character}
-      />
-    ))}
-  </div>
+export const WidgetBody: FunctionComponent<AttributeBodyProps> = ({ character, editMode, updateCharacter }) => (
+  <table className='attribute-grid'>
+    <thead className='attribute-header'>
+      <tr>
+        <th className='attribute-title'> Name </th>
+        <th className='attribute-base'> Base </th>
+        <th className='attribute-skills'> Skills </th>
+        <th className='attribute-total'> Total </th>
+        <th className='attribute-dice'> Dice </th>
+      </tr>
+    </thead>
+    <tbody>
+      {GetDefaultAttributes().map((attribute) => (
+        <AttributeWidgetRow
+          updateCharacter={updateCharacter}
+          editMode={editMode}
+          attribute={attribute}
+          character={character}
+        />
+      ))}
+    </tbody>
+  </table>
 );
 
 const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
@@ -100,15 +101,15 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
   else baseAttributeElement = <Fragment> {baseValue} </Fragment>;
 
   return (
-    <div className='attribute-row'>
-      <div className={`attribute-title ${attribute.name}`}>{attribute.name}</div>
-      <div className={`attribute-base ${attribute.name}`}> {baseAttributeElement} </div>
-      <div className={`attribute-skills ${attribute.name}`}>{GetAttributeSkillTotal(character, attribute)}</div>
-      <div className={`attribute-total ${attribute.name}`}>{GetAttributeTotal(character, attribute, true)}</div>
-      <div className={`attribute-dice ${attribute.name}`}>
+    <tr className='attribute-row'>
+      <td className={`attribute-title ${attribute.name}`}>{attribute.name}</td>
+      <td className={`attribute-base ${attribute.name}`}> {baseAttributeElement} </td>
+      <td className={`attribute-skills ${attribute.name}`}>{GetAttributeSkillTotal(character, attribute)}</td>
+      <td className={`attribute-total ${attribute.name}`}>{GetAttributeTotal(character, attribute, true)}</td>
+      <td className={`attribute-dice ${attribute.name}`}>
         {GetDiceFromAttributeTotal(GetAttributeTotal(character, attribute, true)).map((d) => d.name)} (
         {GetDiceFromAttributeTotal(GetAttributeTotal(character, attribute, false)).map((d) => d.name)})
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 };

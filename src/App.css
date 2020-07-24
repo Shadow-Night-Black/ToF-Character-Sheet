@@ -63,29 +63,6 @@ input {
   min-width: 300px;
 }
 
-/* .attribute-header {
-  background-color: rgb(223, 152, 0);
-} */
-
-.attribute-header,
-.attribute-row {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.attribute-title {
-  width: 90px;
-  flex: 0 0 auto;
-}
-
-.attribute-base,
-.attribute-skills,
-.attribute-total,
-.attribute-dice {
-  width: 40px;
-  flex: 1 0 auto;
-  text-align: center;
-}
 
 .blessing-widget {
   min-width: 530px;
