@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, Fragment } from "react";
 import { WidgetConstructor, WidgetProps } from "./Widget";
 import { Skill, ToDie, NewSkill } from "../../Models/Skill";
 import { AppControls } from "../../App";
@@ -33,27 +33,34 @@ const WidgetHeader: FunctionComponent<WidgetProps> = ({ appControls, state }) =>
 
 const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appControls }) => {
   return (
-    <table className='skill-grid table-condensed'>
-      <thead className='skill-header'>
-        <tr>
-        <th className='skill-name'>Skill Name</th>
-        <th className='skill-level'> Level </th>
-        <th className='skill-attribute'> Attribute </th>
-        <th className='skill-dice'> Dice </th>
-        <th className={"skill-delete"}> </th>
-</tr>
-      </thead>
-      <tbody>
-      {state.character.skills.map((skill) =>
-        editMode
-          ? EditBodyRow(skill, {
-              ...appControls,
-              remove: (pred) => appControls.update((old) => ({ ...old, skills: old.skills.filter((s) => !pred(s)) })),
-              update: (map) =>
-                appControls.update((old) => ({ ...old, skills: old.skills.map((s) => (s !== skill ? s : map(s))) })),
-            })
-          : WidgetBodyRow(skill)
-      )}
+    <Fragment>
+      <table className='skill-grid table-condensed'>
+        <thead className='skill-header'>
+          <tr>
+            <th className='skill-name'>Skill Name</th>
+            <th className='skill-level'> Level </th>
+            <th className='skill-attribute'> Attribute </th>
+            <th className='skill-dice'> Dice </th>
+            <th className={"skill-delete"}> </th>
+          </tr>
+        </thead>
+        <tbody>
+          {state.character.skills.map((skill) =>
+            editMode
+              ? EditBodyRow(skill, {
+                  ...appControls,
+                  remove: (pred) =>
+                    appControls.update((old) => ({ ...old, skills: old.skills.filter((s) => !pred(s)) })),
+                  update: (map) =>
+                    appControls.update((old) => ({
+                      ...old,
+                      skills: old.skills.map((s) => (s !== skill ? s : map(s))),
+                    })),
+                })
+              : WidgetBodyRow(skill)
+          )}
+        </tbody>
+      </table>
       <div className='skill-add'>
         {editMode ? (
           <button
@@ -66,8 +73,7 @@ const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appContro
           </button>
         ) : null}
       </div>
-</tbody>
-    </table>
+    </Fragment>
   );
 };
 
@@ -101,14 +107,17 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
         />
       </td>
       <td className={`skill-attribute`}>
-        <select  className="btn"
+        <select
+          className='btn'
           onChange={(e) => {
             const newval = GetDefaultAttributes().find((a) => a.key === Number(e.target.value));
             if (newval) update((old) => ({ ...old, attribute: newval }));
           }}
         >
           {GetDefaultAttributes().map((a) => (
-            <option value={a.key} selected={skill.attribute === a}>{a.name} </option>
+            <option value={a.key} selected={skill.attribute === a}>
+              {a.name}{" "}
+            </option>
           ))}
         </select>
       </td>
