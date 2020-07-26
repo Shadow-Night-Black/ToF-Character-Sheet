@@ -10,6 +10,7 @@ import { BlessingsWidgetConstructor as BlessingsWidget } from "./UI/Widgets/Tote
 
 type AppState= {
   ui: UIState,
+  ui: UIState<Character>,
   model: ModelState
 }
 
@@ -27,27 +28,30 @@ export type openDialog<T> = (header:DialogSection<T>, body: DialogSection<T>) =>
 export type Update<T> = (update: (old: T) => T) => void;
 export type Delete<T> = (update: (old: T) => boolean) => void;
 
-export interface UIState {
-  dialog: DialogParams<Character>;
+export interface UIState<T> {
+  dialog: DialogParams<T>;
 }
 
 class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
+    
+    const char = CreateTestCharacter()
 
     this.state = {
-      model: { character: CreateTestCharacter()},
+      model: { character: char},
       ui: {
         dialog: {
           isOpen: false,
           body: () => null,
-          header: () => null
+          header: () => null,
+          model: char
         },
       },
     };
   }
 
-  updateUI:Update<UIState> = (map) => {
+  updateUI:Update<UIState<Character>> = (map) => {
     this.setState((state) => ({ ...state, ui: map(state.ui) }));
   };
 
@@ -66,6 +70,7 @@ class App extends React.Component<{}, AppState> {
         isOpen: true,
         header: header,
         body: body,
+        model: this.state.model.character
       },
     }));
   };
@@ -91,7 +96,6 @@ class App extends React.Component<{}, AppState> {
         <Dialog
           updateUI={this.updateUI}
           appControls={this.AppControls}
-          model={this.state.model.character}
           dialogState={this.state.ui.dialog}
         />
       </div>

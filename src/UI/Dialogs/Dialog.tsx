@@ -1,13 +1,12 @@
 import React, { FunctionComponent } from "react";
-import "./Dialog.css";
+import "./Dialog.scss";
 import { Update, UIState, AppControls } from "../../App";
 import { WidgetProps } from "../Widgets/Widget";
 
 type DialogProps<T> = {
   dialogState: DialogParams<T>;
-  model: T;
   appControls: AppControls<T>;
-  updateUI: Update<UIState>;
+  updateUI: Update<UIState<T>>;
 };
 
 export type DialogSection<T> = FunctionComponent<WidgetProps<T>>
@@ -16,11 +15,8 @@ export type DialogParams<T> = {
   isOpen: boolean;
   body: DialogSection<T>
   header: DialogSection<T>
+  model: T;
 };
-
-type DialogState<T> = T & {
-  closed:boolean
-}
 
 export function EditInDialogButton<T>(appControls:AppControls<T>, header:DialogSection<T>, body:DialogSection<T> ) {
 return <button
@@ -34,11 +30,11 @@ return <button
 }
 
 
-export class Dialog<T> extends React.Component<DialogProps<T>, DialogState<T>> {
+export class Dialog<T> extends React.Component<DialogProps<T>, {}> {
   constructor(props: DialogProps<T>) {
     super(props);
 
-    this.state = {...props.model, closed: true };
+    this.state = {...props.dialogState.model, closed: true };
   }
 
   updateUI: Update<T> = (map) => {
@@ -46,14 +42,14 @@ export class Dialog<T> extends React.Component<DialogProps<T>, DialogState<T>> {
   };
 
   saveChanges = () => {
-      this.props.appControls.update(() => this.state);
+      this.props.appControls.update(() => this.props.dialogState.model);
       this.close();
   };
 
   close = () => {
     this.props.updateUI((uiState) => ({
       ...uiState,
-      dialog: { isOpen: false, body: () => null, header: () => null, close: () => {} },
+      dialog: {...this.props.dialogState, isOpen: false, body: () => null, header: () => null},
     }));
 
     this.setState((oldState) => ({...oldState, closed: true}));
@@ -63,13 +59,7 @@ export class Dialog<T> extends React.Component<DialogProps<T>, DialogState<T>> {
     const { appControls, dialogState } = this.props;
     if (!dialogState.isOpen) return null;
 
-    const { closed }  = this.state;
-    let state:T = this.state;
-
-    if (closed) {
-      state = this.props.model;
-      this.setState((old) => ({...old, closed:false}))
-    }
+    const state = this.props.dialogState.model;
 
     return (
       <div className='dialog-backdrop'>

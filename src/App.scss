@@ -72,21 +72,15 @@ input {
   min-width: 530px;
 }
 
-.blessing-header,
+.blessing-grid {
+  width: 100%;
+}
+
+.blessing-header th ,
+.blessing-row td {
+  padding-right: 5px;
+}
+
 .blessing-row {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.blessing-name,
-.blessing-fated,
-.blessing-level,
-.blessing-effect {
-  width: 80px;
-  flex: 1 0 auto;
   text-align: center;
-}
-
-.blessing-effect {
-  width: 250px;
 }
