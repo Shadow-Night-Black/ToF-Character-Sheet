@@ -1,28 +1,22 @@
-import React, { FunctionComponent, ReactNode } from "react";
-import { AppControls, ModelState } from "../../App";
-import { Character } from "../../Models/Character";
+import React, { FunctionComponent } from "react";
+import { AppControls } from "../../App";
+import { EditInDialogButton } from "../Dialogs/Dialog";
 
-export type WidgetConstructor = (props:WidgetProps) => Widget
-
-export interface Widget {
-  header: ReactNode;
-  body: ReactNode;
+export interface Widget<T> {
+  header: FunctionComponent<WidgetProps<T>>;
+  body: FunctionComponent<WidgetProps<T>>;
   className: string;
 }
 
-export interface WidgetProps {
-  appControls: AppControls<Character>,
-  state: ModelState,
-  editMode:boolean
+export interface WidgetProps<T> {
+  appControls: AppControls<T>;
+  state: T;
+  editMode: boolean;
 }
 
-export const Widget: FunctionComponent<Widget> = ({
-  header,
-  body,
-  className,
-}) => (
+export function Widget<T> (props:WidgetProps<T> , { header, body, className }:Widget<T>) {return (
   <div className={`card ${className ? className : ""}`}>
-    <div className="card-header">{header} </div>
-    <div className="card-body">{body}</div>
+    <div className='card-header'>{header(props)} {EditInDialogButton(props.appControls, header, body)} </div>
+    <div className='card-body'>{body(props)}</div>
   </div>
-);
+);}

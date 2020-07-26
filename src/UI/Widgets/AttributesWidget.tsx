@@ -1,15 +1,10 @@
 import { Attribute, GetDefaultAttributes, GetDiceFromAttributeTotal } from "../../Models/Attribute";
 import React, { FunctionComponent, ReactElement, Fragment } from "react";
 import { Character, GetAttributeSkillTotal, GetAttributeTotal } from "../../Models/Character";
-import { Update, openDialog } from "../../App";
-import { WidgetConstructor } from "./Widget";
+import { Update} from "../../App";
 import "./AttributesWidget.css";
+import { Widget, WidgetProps } from "./Widget";
 
-type AttributeBodyProps = {
-  character: Character;
-  editMode: boolean;
-  updateCharacter: Update<Character>;
-};
 
 type AttributeRowProps = {
   character: Character;
@@ -18,38 +13,13 @@ type AttributeRowProps = {
   updateCharacter: Update<Character>;
 };
 
-type AttributeHeaderProps = {
-  character: Character;
-  openDialog: openDialog;
-};
-
-export const AttributeWidgetConstructor: WidgetConstructor = ({ appControls, state }) => {
-  return {
-    header: <WidgetHeader character={state.character} openDialog={appControls.openDialog} />,
-    body: <WidgetBody character={state.character} updateCharacter={appControls.update} editMode={false} />,
-    className: "attribute-widget",
-  };
-};
-
-const WidgetHeader: FunctionComponent<AttributeHeaderProps> = ({ openDialog }) => (
-  <div className='header'>
-    Attributes
-    <button
-      className='btn-primary btn-sm btn right'
-      onClick={() => {
-        openDialog((char, update: Update<Character>) => (
-          <WidgetBody {...{ editMode: true, character: char, updateCharacter: update }} />
-        ));
-      }}
-    >
-      Edit
-    </button>
-  </div>
+const WidgetHeader: FunctionComponent<{}> = () => (
+    <h5 className={"modal-title"}>Attributes</h5>
 );
 
 export const className = "attribute-widget";
 
-export const WidgetBody: FunctionComponent<AttributeBodyProps> = ({ character, editMode, updateCharacter }) => (
+export const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, appControls: {update}, editMode }) => (
   <table className='attribute-grid'>
     <thead className='attribute-header'>
       <tr>
@@ -63,10 +33,10 @@ export const WidgetBody: FunctionComponent<AttributeBodyProps> = ({ character, e
     <tbody>
       {GetDefaultAttributes().map((attribute) => (
         <AttributeWidgetRow
-          updateCharacter={updateCharacter}
+          updateCharacter={update}
           editMode={editMode}
           attribute={attribute}
-          character={character}
+          character={state}
         />
       ))}
     </tbody>
@@ -113,3 +83,9 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
     </tr>
   );
 };
+
+export const AttributeWidgetConstructor: Widget<Character> = {
+    header: WidgetHeader ,
+    body: WidgetBody,
+    className: "attribute-widget",
+  };

@@ -1,63 +1,73 @@
-import React, { ReactNode } from "react";
+import React, { FunctionComponent } from "react";
 import "./Dialog.css";
-import { Character } from "../../Models/Character";
-import { Update, UIState, ModelState } from "../../App";
+import { Update, UIState, AppControls } from "../../App";
+import { WidgetProps } from "../Widgets/Widget";
 
-type DialogProps = {
-  dialogState: DialogParams;
-  model: ModelState;
-  saveChanges: Update<Character>;
+type DialogProps<T> = {
+  dialogState: DialogParams<T>;
+  model: T;
+  appControls: AppControls<T>;
   updateUI: Update<UIState>;
 };
 
-export type DialogBody = (character: Character, update: Update<Character>) => ReactNode;
+export type DialogSection<T> = FunctionComponent<WidgetProps<T>>
 
-export type DialogParams = {
+export type DialogParams<T> = {
   isOpen: boolean;
-  onClose?: () => void;
-  node: DialogBody;
+  body: DialogSection<T>
+  header: DialogSection<T>
 };
 
-type DialogState = ModelState & {
+type DialogState<T> = T & {
   closed:boolean
 }
 
+export function EditInDialogButton<T>(appControls:AppControls<T>, header:DialogSection<T>, body:DialogSection<T> ) {
+return <button
+      className='btn-primary btn-sm btn '
+      onClick={() => {
+        appControls.openDialog(header, body);
+      }}
+    >
+      Edit
+    </button>
+}
 
-export class Dialog extends React.Component<DialogProps, DialogState> {
-  constructor(props: DialogProps) {
+
+export class Dialog<T> extends React.Component<DialogProps<T>, DialogState<T>> {
+  constructor(props: DialogProps<T>) {
     super(props);
 
     this.state = {...props.model, closed: true };
   }
 
-  updateUICharacter: Update<Character> = (map) => {
-    this.setState((oldState) => ({ ...oldState, character: map(oldState.character ?? this.props.model) }));
+  updateUI: Update<T> = (map) => {
+    this.setState(map);
   };
 
   saveChanges = () => {
-      this.props.saveChanges(() => this.state.character);
+      this.props.appControls.update(() => this.state);
       this.close();
   };
 
   close = () => {
-    if (this.props.dialogState.onClose) this.props.dialogState.onClose();
     this.props.updateUI((uiState) => ({
       ...uiState,
-      dialog: { isOpen: false, node: () => null, close: () => {} },
+      dialog: { isOpen: false, body: () => null, header: () => null, close: () => {} },
     }));
 
     this.setState((oldState) => ({...oldState, closed: true}));
   };
 
   render() {
-    const { dialogState } = this.props;
+    const { appControls, dialogState } = this.props;
     if (!dialogState.isOpen) return null;
 
     const { closed }  = this.state;
-    let character = this.state.character;
+    let state:T = this.state;
 
     if (closed) {
-      character = this.props.model.character;
+      state = this.props.model;
       this.setState((old) => ({...old, closed:false}))
     }
 
@@ -65,13 +75,15 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
       <div className='dialog-backdrop'>
         <div className='modal-dialog' role='document'>
           <div className='modal-content'>
-            <div className='modal-header'>
-              <h5 className='modal-title'>Modal title</h5>
+            <div className='modal-header modal-title'>
+              <dialogState.header appControls={appControls} state={state} editMode={true} />
               <button type='button' className='close' aria-label='Close' onClick={this.close}>
                 <span aria-hidden='true'>&times;</span>
               </button>
             </div>
-            <div className='modal-body'>{dialogState.node(character, this.updateUICharacter)}</div>
+            <div className='modal-body'>
+
+              <dialogState.body appControls={appControls} state={state} editMode={true} /> </div>
             <div className='modal-footer'>
               <button type='button' className='btn btn-primary' onClick={this.saveChanges}>
                 Save changes

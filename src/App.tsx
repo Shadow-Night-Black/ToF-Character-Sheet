@@ -2,11 +2,11 @@ import { Widget, WidgetProps } from "./UI/Widgets/Widget";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Dialog, DialogParams, DialogBody } from "./UI/Dialogs/Dialog";
+import { Dialog, DialogParams, DialogSection } from "./UI/Dialogs/Dialog";
 import { CreateTestCharacter, Character } from "./Models/Character";
 import { AttributeWidgetConstructor } from "./UI/Widgets/AttributesWidget";
-import { SkillsWidgetConstructor } from "./UI/Widgets/SkillsWidget";
-import { BlessingsWidgetConstructor } from "./UI/Widgets/TotemWidget";
+import { SkillsWidget } from "./UI/Widgets/SkillsWidget";
+import { BlessingsWidgetConstructor as BlessingsWidget } from "./UI/Widgets/TotemWidget";
 
 type AppState= {
   ui: UIState,
@@ -18,17 +18,17 @@ export interface ModelState {
 }
 
 export interface AppControls<T> {
-  openDialog: openDialog;
+  openDialog: openDialog<T>;
   update: Update<T>;
   remove: Delete<T> ;
 }
 
-export type openDialog = (node: DialogBody, oncloseCallback?: () => void) => void;
+export type openDialog<T> = (header:DialogSection<T>, body: DialogSection<T>) => void;
 export type Update<T> = (update: (old: T) => T) => void;
 export type Delete<T> = (update: (old: T) => boolean) => void;
 
 export interface UIState {
-  dialog: DialogParams;
+  dialog: DialogParams<Character>;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -40,8 +40,8 @@ class App extends React.Component<{}, AppState> {
       ui: {
         dialog: {
           isOpen: false,
-          onClose: () => {},
-          node: () => null,
+          body: () => null,
+          header: () => null
         },
       },
     };
@@ -59,13 +59,13 @@ class App extends React.Component<{}, AppState> {
     this.setState((state) => ({ ...state, model: map(state.model) }));
   };
 
-  openDialog: openDialog = (node, oncloseCallback?) => {
+  openDialog: openDialog<Character> = (header, body) => {
     this.updateUI((uiState) => ({
       ...uiState,
       dialog: {
         isOpen: true,
-        node: node,
-        onClose: oncloseCallback,
+        header: header,
+        body: body,
       },
     }));
   };
@@ -76,22 +76,22 @@ class App extends React.Component<{}, AppState> {
     remove: () => {}
   };
 
-  WidgetProps: ()=> WidgetProps  = () => ({
+  WidgetProps: ()=> WidgetProps<Character>  = () => ({
     appControls: this.AppControls,
-    state: this.state.model,
+    state: this.state.model.character,
     editMode: false,
   })
 
   render() {
     return (
       <div className='App card-columns'>
-        <Widget {...AttributeWidgetConstructor(this.WidgetProps())}></Widget>
-        <Widget {...SkillsWidgetConstructor(this.WidgetProps())}></Widget>
-        <Widget {...BlessingsWidgetConstructor(this.WidgetProps())}></Widget>
+        {Widget(this.WidgetProps(), AttributeWidgetConstructor)}
+        {Widget(this.WidgetProps(), SkillsWidget)}
+        {Widget(this.WidgetProps(), BlessingsWidget)}
         <Dialog
           updateUI={this.updateUI}
-          saveChanges={this.updateCharacter}
-          model={this.state.model}
+          appControls={this.AppControls}
+          model={this.state.model.character}
           dialogState={this.state.ui.dialog}
         />
       </div>

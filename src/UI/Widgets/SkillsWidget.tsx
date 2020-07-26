@@ -1,37 +1,19 @@
 import React, { FunctionComponent, Fragment } from "react";
-import { WidgetConstructor, WidgetProps } from "./Widget";
+import { WidgetProps, Widget } from "./Widget";
 import { Skill, ToDie, NewSkill } from "../../Models/Skill";
 import { AppControls } from "../../App";
 import "./SkillsWidget.css";
 import { GetDefaultAttributes } from "../../Models/Attribute";
+import { Character } from "../../Models/Character";
 
-export const SkillsWidgetConstructor: WidgetConstructor = (props) => ({
-  header: <WidgetHeader {...props} />,
-  body: <WidgetBody {...props} />,
-  className: "skill-widget",
-});
 
-const WidgetHeader: FunctionComponent<WidgetProps> = ({ appControls, state }) => (
-  <div className='header'>
-    Skills
-    <button
-      className='btn-primary btn-sm btn right'
-      onClick={() => {
-        appControls.openDialog((character, updateCharacter) => (
-          <WidgetBody
-            editMode={true}
-            appControls={{ ...appControls, update: updateCharacter }}
-            state={{ ...state, character }}
-          />
-        ));
-      }}
-    >
-      Edit
-    </button>
+const WidgetHeader: FunctionComponent<WidgetProps<Character>> = () => { 
+ return <div className='header'>
+    <h5 className={"modal-title"}>Skills</h5>
   </div>
-);
+;}
 
-const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appControls }) => {
+const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode, appControls }) => {
   return (
     <Fragment>
       <table className='skill-grid table-condensed'>
@@ -45,10 +27,11 @@ const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appContro
           </tr>
         </thead>
         <tbody>
-          {state.character.skills.map((skill) =>
+          {state.skills.map((skill) =>
             editMode
               ? EditBodyRow(skill, {
                   ...appControls,
+                  openDialog: () => null,
                   remove: (pred) =>
                     appControls.update((old) => ({ ...old, skills: old.skills.filter((s) => !pred(s)) })),
                   update: (map) =>
@@ -66,7 +49,7 @@ const WidgetBody: FunctionComponent<WidgetProps> = ({ state, editMode, appContro
           <button
             className='btn btn-sm btn-success'
             onClick={() => {
-              appControls.update((old) => ({ ...old, skills: old.skills.concat(NewSkill(state.character)) }));
+              appControls.update((old) => ({ ...old, skills: old.skills.concat(NewSkill(state)) }));
             }}
           >
             Add new skill
@@ -125,7 +108,7 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
       <td className={"skill-delete"}>
         <button
           type='button'
-          className='btn btn-outline-danger btn-sm btn right'
+          className='btn btn-outline-danger btn-sm btn'
           onClick={() =>
             remove((old) => {
               return old === skill;
@@ -149,3 +132,10 @@ function WidgetBodyRow(skill: Skill): JSX.Element {
     </tr>
   );
 }
+
+
+export const SkillsWidget: Widget<Character> = {
+  header: WidgetHeader,
+  body: WidgetBody,
+  className: "skill-widget",
+};

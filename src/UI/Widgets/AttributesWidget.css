@@ -1,3 +1,7 @@
+.attribute-widget {
+  min-width: 300px;
+}
+
 .attribute-grid {
     width: 100%;
 }

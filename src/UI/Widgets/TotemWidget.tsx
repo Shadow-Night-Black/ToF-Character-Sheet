@@ -1,28 +1,17 @@
-import * as Character from "../../Models/Character";
 import React, { FunctionComponent } from "react";
-import { WidgetConstructor } from "./Widget";
+import { Widget, WidgetProps } from "./Widget";
+import { Character } from "../../Models/Character";
 
-type BlessingsBodyProps = {
-  character: Character.Character;
-};
-type BlessingsHeaderProps = {
-  character: Character.Character;
-};
 
-export const BlessingsWidgetConstructor: WidgetConstructor = ({ state }) => ({
-  header: <WidgetHeader character={state.character} />,
-  body: <WidgetBody character={state.character} />,
-  className: "blessing-widget",
-});
-
-const WidgetHeader: FunctionComponent<BlessingsHeaderProps> = ({ character }) => (
+const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({state}) => (
   <div className={`header`}>
-    Totem - {character.totem.fated.name}
-    <button className='btn-primary btn-sm btn right'> Edit </button>
+    <h5 className={"modal-title"}>
+    Totem - {state.totem.fated.name}
+    </h5>
   </div>
 );
 
-const WidgetBody: FunctionComponent<BlessingsBodyProps> = ({ character }) => (
+const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state }) => (
   <table className='blessing-grid'>
     <thead className='blessing-header'>
       <tr>
@@ -33,7 +22,7 @@ const WidgetBody: FunctionComponent<BlessingsBodyProps> = ({ character }) => (
       </tr>
     </thead>
     <tbody>
-      {character.totem.blessings.map((b) => (
+      {state.totem.blessings.map((b) => (
         <tr className={`blessing-row ${b.fated.attribute.name}`}>
           <td className='blessing-name'> {b.name} </td>
           <td className='blessing-fated'> {b.fated.name} </td>
@@ -44,3 +33,9 @@ const WidgetBody: FunctionComponent<BlessingsBodyProps> = ({ character }) => (
     </tbody>
   </table>
 );
+
+export const BlessingsWidgetConstructor: Widget<Character> = {
+  header: WidgetHeader,
+  body: WidgetBody,
+  className: "blessing-widget",
+};
