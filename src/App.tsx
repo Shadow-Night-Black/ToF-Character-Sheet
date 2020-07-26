@@ -9,7 +9,6 @@ import { SkillsWidget } from "./UI/Widgets/SkillsWidget";
 import { BlessingsWidgetConstructor as BlessingsWidget } from "./UI/Widgets/TotemWidget";
 
 type AppState= {
-  ui: UIState,
   ui: UIState<Character>,
   model: ModelState
 }
