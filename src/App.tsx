@@ -1,7 +1,7 @@
 import { Widget, WidgetProps } from "./UI/Widgets/Widget";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import "./App.scss";
 import { Dialog, DialogParams, DialogSection } from "./UI/Dialogs/Dialog";
 import { CreateTestCharacter, Character } from "./Models/Character";
 import { AttributeWidgetConstructor } from "./UI/Widgets/AttributesWidget";

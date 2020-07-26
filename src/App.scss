@@ -1,7 +1,3 @@
-.right {
-  float: right;
-}
-
 input {
     background-color: #fff;
     background-clip: border-box;
@@ -9,10 +5,22 @@ input {
     border-radius: .25rem;
 }
 
+.card-header {
+  display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+// .card-columns {
+//   @include media-breakpoint-only(lg) {
+//     column-count: 4;
+//   }
+// }
+
 
 .Power {
-  background-color: hsl(0deg 86% 94%);
-  background:linear-gradient(to bottom, hsl(0deg 86% 94%), hsl(0deg 100% 90%))
+  background-color: hsl(0deg, 86%, 94%);
+  background:linear-gradient(to bottom, hsl(0deg, 86%, 94%), hsl(0deg, 100%, 90%))
 }
 
 .Power-Header {
@@ -28,7 +36,7 @@ input {
 }
 
 .Resilience {
-  background-color: hsl(30 52% 77% / 1);
+  background-color: hsl(30, 52%, 77%);
 }
 
 .Resilience-Header {
@@ -36,7 +44,7 @@ input {
 }
 
 .Intellect {
-  background-color: hsl(263deg 92% 80%);
+  background-color: hsl(263deg, 92%, 80%);
 }
 
 .Intellect-Header {
@@ -57,10 +65,6 @@ input {
 
 .Presence {
   background-color: lightyellow;
-}
-
-.attribute-widget {
-  min-width: 300px;
 }
 
 
