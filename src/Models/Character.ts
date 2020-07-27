@@ -19,12 +19,12 @@ export function GetAttributeTotal(character: Character, attribute: Attribute, in
   return (
     (character.attributes.get(attribute) || 0) +
     GetAttributeSkillTotal(character, attribute) +
-    (!inCity && character.totem.fated[0]?.attribute === attribute ? 6 : 0)
+    (!inCity && character.totem.fated[0]?.attribute.key === attribute.key ? 6 : 0)
   );
 }
 
 export function GetAttributeSkillTotal(character: Character, attribute: Attribute): number {
-  return character.skills.reduce((total, skill) => total + (skill.attribute === attribute ? skill.level : 0), 0);
+  return character.skills.reduce((total, skill) => total + (skill.attribute.key === attribute.key ? skill.level : 0), 0);
 }
 
 const defaultSkillsInfo = [
@@ -57,4 +57,32 @@ export function CreateTestCharacter(): Character {
   char.totem.blessings = GetDefaultBlessings().filter(x => char.totem.fated.includes(x.fated)).slice(0,5);
 
   return char;
+}
+
+type VersionSaveData = {
+  version:1,
+  data:CharacterSaveDataV1
+}
+
+interface CharacterSaveDataV1 {
+  name: string;
+  player: string;
+  age: number;
+  gender: string;
+  bio: string;
+  attributes: number[];
+  skills: Skill[];
+  totem: Totem;
+}
+
+export function CharacterToJson(character:Character):string {
+  return JSON.stringify({version:1, data: {...character, attributes:GetDefaultAttributes().map(x => character.attributes.get(x))}})
+}
+
+export function JsonToCharacter(json:string):Character {
+  const {version, data}:VersionSaveData = JSON.parse(json);
+  if (version === 1)
+    return {...data, attributes: new Map(GetDefaultAttributes().map((a, i) => [a, data.attributes[i]]))}
+
+    throw new Error("Invalid save data!");
 }

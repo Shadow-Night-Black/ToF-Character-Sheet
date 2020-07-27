@@ -26,14 +26,14 @@ const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({ state, editMo
               updateTotem((old) => ({
                 ...old,
                 fated: old.fated.map((x) =>
-                  x === fated ? GetDefaultFated().find((x) => x.key === Number.parseInt(value))! : x
+                  x.key === fated.key ? GetDefaultFated().find((x) => x.key === Number.parseInt(value))! : x
                 )
               }));
             }
           }}
         >
           {GetDefaultFated()
-            .filter((f) => !state.totem.fated.includes(f) || f === fated)
+            .filter((f) => !state.totem.fated.includes(f) || f.key === fated.key)
             .map((f) => <option value={f.key} key={f.key}>{f.name}</option>)
             .concat(RemoveOption)}
         </select>
@@ -128,7 +128,7 @@ function EditBlessingsRow(blessing: Blessing, char: Character, updateTotem: Upda
           }}
         >
           {GetDefaultBlessings()
-            .filter((x) => (char.totem.fated.includes(x.fated) && !char.totem.blessings.includes(x)) || x === blessing)
+            .filter((x) => (char.totem.fated.includes(x.fated) && !char.totem.blessings.includes(x)) || x.key === blessing.key)
             .map((b) => (
               <option value={b.key} key={b.key}>
                 {b.name}

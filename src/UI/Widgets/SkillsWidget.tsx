@@ -113,7 +113,7 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
           className="btn btn-outline-danger btn-sm btn"
           onClick={() =>
             remove((old) => {
-              return old === skill;
+              return old.key === skill.key;
             })
           }
         >
