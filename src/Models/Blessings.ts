@@ -1,57 +1,64 @@
 import { Fated, GetDefaultFated } from "./Fated";
+import { Identable } from "../Helpers/Collections";
+import Blessings from "../Data/Blessings.json"
 
-export interface Blessing {
+export type Blessing = BlessingData & Identable;
+export type BlessingData = {
   name: string;
   fated: Fated;
   level: number;
   effect: string;
+};
+
+export function GetDefaultBlessings(): Blessing[] {
+  return defaultBlessings;
 }
 
-export function GetDefaultBlessings() {
-    return defaultBlessings;
-}
+const blessingsData = Blessings;
 
-const defaultBlessings: Blessing[] = [
-  {
-    name: "Strengthen",
-    effect:
-      "Add an additional Power attribute die to a Power action's roll total.",
-    level: 1,
-    fated: GetDefaultFated().find((x) => x.attribute.shortName === "Pow")!,
-  },
-  {
-    name: "Flex",
-    effect:
-      "Increase one adjacent entity’s Power attribute die size by two pips until the next rest.",
-    level: 1,
-    fated: GetDefaultFated().find((x) => x.attribute.shortName === "Pow")!,
-  },
-  {
-    name: "Bulk",
-    effect:
-      "You or one adjacent entity can use the sum of two Power dice you roll as the roll total for any one physical action.",
-    level: 1,
-    fated: GetDefaultFated().find((x) => x.attribute.shortName === "Pow")!,
-  },
-  {
-    name: "Punish",
-    effect:
-      "Double the roll total of the next physical action against one selected entity.",
-    level: 1,
-    fated: GetDefaultFated().find((x) => x.attribute.shortName === "Pow")!,
-  },
-  {
-    name: "Overpower",
-    effect:
-      "One selected entity takes their lowest die value for their next three Power actions.",
-    level: 1,
-    fated: GetDefaultFated().find((x) => x.attribute.shortName === "Pow")!,
-  },
-  {
-    name: "Retaliate",
-    effect:
-      "Inflict degrees of a physical status condition you have on up to three selected targets within an encounter - 1 degree on three entities, 2 degrees on 2 entities, three degrees on 1 entity. These do not affect spirit or adrenaline",
-    level: 1,
-    fated: GetDefaultFated().find((x) => x.attribute.shortName === "Pow")!,
-  },
-];
+const defaultBlessings = blessingsData.map((x, i) => ({ ...x, fated:GetDefaultFated()[x.fated-1], key: i }));
+
+
+/*
+$once
+[
+$each
+{
+"name": "$1",
+"effect": "$2",
+"level": $0,
+"fated": 1
+},
+{
+"name": "$3",
+"effect": "$4",
+"level": $0,
+"fated": 2
+},
+{
+"name": "$5",
+"effect": "$6",
+"level": $0,
+"fated": 3
+},
+{
+"name": "$7",
+"effect": "$8",
+"level": $0,
+"fated": 4
+},
+{
+"name": "$9",
+"effect": "$10",
+"level": $0,
+"fated": 5
+},
+{
+"name": "$11",
+"effect": "$12",
+"level": $0,
+"fated": 6
+},
+$once
+]
+*/

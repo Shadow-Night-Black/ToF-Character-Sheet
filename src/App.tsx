@@ -6,7 +6,7 @@ import { Dialog, DialogParams, DialogSection } from "./UI/Dialogs/Dialog";
 import { CreateTestCharacter, Character } from "./Models/Character";
 import { AttributeWidgetConstructor } from "./UI/Widgets/AttributesWidget";
 import { SkillsWidget } from "./UI/Widgets/SkillsWidget";
-import { BlessingsWidgetConstructor as BlessingsWidget } from "./UI/Widgets/TotemWidget";
+import { BlessingsWidget } from "./UI/Widgets/TotemWidget";
 
 type AppState= {
   ui: UIState<Character>,

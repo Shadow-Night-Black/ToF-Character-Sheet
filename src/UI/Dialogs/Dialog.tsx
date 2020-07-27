@@ -31,14 +31,9 @@ return <button
 
 
 export class Dialog<T> extends React.Component<DialogProps<T>, {}> {
-  constructor(props: DialogProps<T>) {
-    super(props);
-
-    this.state = {...props.dialogState.model, closed: true };
-  }
 
   updateUI: Update<T> = (map) => {
-    this.setState(map);
+    this.props.updateUI(old => ({...old, dialog:{...old.dialog, model:map(old.dialog.model)}}))
   };
 
   saveChanges = () => {
@@ -56,10 +51,11 @@ export class Dialog<T> extends React.Component<DialogProps<T>, {}> {
   };
 
   render() {
-    const { appControls, dialogState } = this.props;
+    const { dialogState } = this.props;
     if (!dialogState.isOpen) return null;
 
     const state = this.props.dialogState.model;
+    const appControls  = {...this.props.appControls, update: this.updateUI};
 
     return (
       <div className='dialog-backdrop'>

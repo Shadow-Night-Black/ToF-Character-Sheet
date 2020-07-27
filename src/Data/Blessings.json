@@ -1,0 +1,434 @@
+[
+  {
+    "name": "Strengthen",
+    "effect": "Add an additional Power attribute die to a Power action's roll total.",
+    "level": 1,
+    "fated": 1
+  },
+  {
+    "name": "Quicken",
+    "effect": "Add an additional Finesse attribute die to a Finesse action's roll total.",
+    "level": 1,
+    "fated": 2
+  },
+  {
+    "name": "Toughen",
+    "effect": "Add an additional Resilience attribute die to a Resilience action's roll total.",
+    "level": 1,
+    "fated": 3
+  },
+  {
+    "name": "Augment",
+    "effect": "Add an additional Intellect attribute die to an Intellect action's roll total.",
+    "level": 1,
+    "fated": 4
+  },
+  {
+    "name": "Heighten",
+    "effect": "Add an additional Wits attribute die to a Wits action's roll total.",
+    "level": 1,
+    "fated": 5
+  },
+  {
+    "name": "Perfect",
+    "effect": "Add an additional Presence attribute die to a Presence action's roll total.",
+    "level": 1,
+    "fated": 6
+  },
+  {
+    "name": "Flex",
+    "effect": "Increase one adjacent entity’s Power attribute die size by two pips until the next rest.",
+    "level": 1,
+    "fated": 1
+  },
+  {
+    "name": "Balance",
+    "effect": "Increase one adjacent entity’s Finesse attribute die size by two pips until the next rest.",
+    "level": 1,
+    "fated": 2
+  },
+  {
+    "name": "Guard",
+    "effect": "Increase one adjacent entity’s Resilience attribute die size by two pips until the next rest.",
+    "level": 1,
+    "fated": 3
+  },
+  {
+    "name": "Clarify",
+    "effect": "Increase one adjacent entity’s Intellect attribute die size by two pips until the next rest.",
+    "level": 1,
+    "fated": 4
+  },
+  {
+    "name": "Awaken",
+    "effect": "Increase one adjacent entity’s Wits attribute die size by two pips until the next rest.",
+    "level": 1,
+    "fated": 5
+  },
+  {
+    "name": "Influence",
+    "effect": "Increase one adjacent entity’s Presence attribute die size by two pips until the next rest.",
+    "level": 1,
+    "fated": 6
+  },
+  {
+    "name": "Bulk",
+    "effect": "You or one adjacent entity can use the sum of two Power dice you roll as the roll total for any one physical action.",
+    "level": 2,
+    "fated": 1
+  },
+  {
+    "name": "Swift",
+    "effect": "Immediately use your Finesse die total as the roll total for one additional Finesse action.",
+    "level": 2,
+    "fated": 2
+  },
+  {
+    "name": "Repair",
+    "effect": "Immediately use your Resilience die total for one additional action to reduce physical status conditions.",
+    "level": 2,
+    "fated": 3
+  },
+  {
+    "name": "Abstract",
+    "effect": "Add an additional Intellect attribute die to any non-Intellect action’s roll total.",
+    "level": 2,
+    "fated": 4
+  },
+  {
+    "name": "Restore",
+    "effect": "Immediately use your Wits die total for an additional action to reduce mental status conditions.",
+    "level": 2,
+    "fated": 5
+  },
+  {
+    "name": "Inspire",
+    "effect": "You or one adjacent entity can use the sum of two Presence dice you roll as the roll total for any one mental action.",
+    "level": 2,
+    "fated": 6
+  },
+  {
+    "name": "Punish",
+    "effect": "Double the roll total of the next physical action against one selected entity.",
+    "level": 2,
+    "fated": 1
+  },
+  {
+    "name": "Momentum",
+    "effect": "Immediately repeat one physical action, using the same roll total, against the same or another viable target.",
+    "level": 2,
+    "fated": 2
+  },
+  {
+    "name": "Sentry",
+    "effect": "Elect to be the target of a physical action for which you are in range and half the roll total.",
+    "level": 2,
+    "fated": 3
+  },
+  {
+    "name": "Second Thought",
+    "effect": "Roll one action again, using all dice from both rolls as part of the dice pool.",
+    "level": 2,
+    "fated": 4
+  },
+  {
+    "name": "Foresight",
+    "effect": "Double the roll total of your next reflexive action.",
+    "level": 2,
+    "fated": 5
+  },
+  {
+    "name": "Double-take",
+    "effect": "One selected entity rolls one action again and uses the lowest die value across either roll.",
+    "level": 2,
+    "fated": 6
+  },
+  {
+    "name": "Overpower",
+    "effect": "One selected entity takes their lowest die value for their next three Power actions.",
+    "level": 3,
+    "fated": 1
+  },
+  {
+    "name": "Hinder",
+    "effect": "One selected entity takes their lowest die value for their next three Finesse actions.",
+    "level": 3,
+    "fated": 2
+  },
+  {
+    "name": "Fracture",
+    "effect": "One selected entity takes their lowest die value for their next three Resilience actions.",
+    "level": 3,
+    "fated": 3
+  },
+  {
+    "name": "Obfuscate",
+    "effect": "One selected entity takes their lowest die value for their next three Intellect actions.",
+    "level": 3,
+    "fated": 4
+  },
+  {
+    "name": "Overwhelm",
+    "effect": "One selected entity takes their lowest die value for their next three Wits actions.",
+    "level": 3,
+    "fated": 5
+  },
+  {
+    "name": "Outshine",
+    "effect": "One selected entity takes their lowest die value for their next three Presence actions.",
+    "level": 3,
+    "fated": 6
+  },
+  {
+    "name": "Retaliate",
+    "effect": "Inflict degrees of a physical status condition you have on up to three selected targets within an encounter - 1 degree on three entities, 2 degrees on 2 entities, three degrees on 1 entity. These do not affect spirit or adrenaline",
+    "level": 3,
+    "fated": 1
+  },
+  {
+    "name": "Multiply",
+    "effect": "One physical action can affect up to three selected entities regardless of range, using the same roll total, ignoring all disadvantages.",
+    "level": 3,
+    "fated": 2
+  },
+  {
+    "name": "Reinforce",
+    "effect": "Grant you and any selected adjacent entities resistance to the next three physical actions taken against any of you.",
+    "level": 3,
+    "fated": 3
+  },
+  {
+    "name": "Bewilder",
+    "effect": "Inflict degrees of a mental status condition you have on up to three targets within an encounter - 1 degree on three entities, 2 degrees on 2 entities, three degrees on 1 entity. These do not affect spirit or adrenaline",
+    "level": 3,
+    "fated": 4
+  },
+  {
+    "name": "Expose",
+    "effect": "One selected entity is treated as vulnerable to the next three successful physical actions against it.",
+    "level": 3,
+    "fated": 5
+  },
+  {
+    "name": "Encourage",
+    "effect": "Grant you and any selected adjacent entities resistance to the next three mental actions taken against any of you",
+    "level": 3,
+    "fated": 6
+  },
+  {
+    "name": "War Cry",
+    "effect": "For up to four Power actions performed by you or any selected entity, double the roll total.",
+    "level": 4,
+    "fated": 1
+  },
+  {
+    "name": "Beckoning Sign",
+    "effect": "For up to four Finesse actions performed by you or any selected entity, double the roll total.",
+    "level": 4,
+    "fated": 2
+  },
+  {
+    "name": "Shield Command",
+    "effect": "For up to four Resilience actions performed by you or any selected entity, double the roll total.",
+    "level": 4,
+    "fated": 3
+  },
+  {
+    "name": "Telling Rite",
+    "effect": "For up to four Intellect actions performed by you or any selected entity, double the roll total.",
+    "level": 4,
+    "fated": 4
+  },
+  {
+    "name": "Willing Voice",
+    "effect": "For up to four Wits actions performed by you or any selected entity, double the roll total.",
+    "level": 4,
+    "fated": 5
+  },
+  {
+    "name": "Harmonising Word",
+    "effect": "For up to four Presence actions performed by you or any selected entity, double the roll total.",
+    "level": 4,
+    "fated": 6
+  },
+  {
+    "name": "Break Through",
+    "effect": "Select up to four entities. The next physical action against each entity cannot be rolled against.",
+    "level": 4,
+    "fated": 1
+  },
+  {
+    "name": "Step Ahead",
+    "effect": "Gain four additional Finesse actions or any manoeuvres to take at any time.",
+    "level": 4,
+    "fated": 2
+  },
+  {
+    "name": "Endure",
+    "effect": "Immediately use twice your Resilience die total for an action to reduce physical status conditions or regain Spirit for you or any adjacent entities.",
+    "level": 4,
+    "fated": 3
+  },
+  {
+    "name": "Outwit",
+    "effect": "One selected entity is treated as vulnerable to the next four successful mental actions against it.",
+    "level": 4,
+    "fated": 4
+  },
+  {
+    "name": "Stay Alert",
+    "effect": "Gain four additional Wits actions or any manoeuvres to take at any time.",
+    "level": 4,
+    "fated": 5
+  },
+  {
+    "name": "Reassure",
+    "effect": "Immediately use twice your Presence die total for an action to reduce mental status conditions or regain Spirit for your or any adjacent entities.",
+    "level": 4,
+    "fated": 6
+  },
+  {
+    "name": "Dominate",
+    "effect": "May apply your Power attribute die total as the roll total for the next 5 Power actions.",
+    "level": 5,
+    "fated": 1
+  },
+  {
+    "name": "Haste",
+    "effect": "May apply your Finesse attribute die total as the roll total for the next 5 Finesse actions.",
+    "level": 5,
+    "fated": 2
+  },
+  {
+    "name": "Vigilance",
+    "effect": "May apply your Resilience attribute die total as the roll total for the next 5 Resilience actions.",
+    "level": 5,
+    "fated": 3
+  },
+  {
+    "name": "Concentrate",
+    "effect": "May apply your Intellect attribute die total as the roll total for the next 5 Intellect actions.",
+    "level": 5,
+    "fated": 4
+  },
+  {
+    "name": "Perspective",
+    "effect": "May apply your Wits attribute die total as the roll total for the next 5 Wits actions.",
+    "level": 5,
+    "fated": 5
+  },
+  {
+    "name": "Irresistible",
+    "effect": "May apply your Presence attribute die total as the roll total for the next 5 Presence actions.",
+    "level": 5,
+    "fated": 6
+  },
+  {
+    "name": "Devastating Blow",
+    "effect": "Immediately inflict 5 degrees of Bleed and/or Feeble status to one entity. This does not affect Spirit or adrenaline.",
+    "level": 5,
+    "fated": 1
+  },
+  {
+    "name": "Paralysing Touch",
+    "effect": "Immediately inflict 5 degrees of Blind and/or Paralysis status to one entity. This does not affect Spirit or adrenaline.",
+    "level": 5,
+    "fated": 2
+  },
+  {
+    "name": "Crushing Palm",
+    "effect": "Immediately inflict 5 degrees of Petrification and/or Slow status to one entity. This does not affect Spirit or adrenaline.",
+    "level": 5,
+    "fated": 3
+  },
+  {
+    "name": "Perplexing Notion",
+    "effect": "Immediately inflict 5 degrees of Stun and/or Confusion status to one entity. This does not affect Spirit or adrenaline.",
+    "level": 5,
+    "fated": 4
+  },
+  {
+    "name": "Blinding Light",
+    "effect": "Immediately inflict 5 degrees of Blind and/or Burn status to one entity. This does not affect Spirit or adrenaline.",
+    "level": 5,
+    "fated": 5
+  },
+  {
+    "name": "Unnerving Truth",
+    "effect": "Immediately inflict 5 degrees of Disturbance and/or Fear status to one entity. This does not affect Spirit or adrenaline.",
+    "level": 5,
+    "fated": 6
+  },
+  {
+    "name": "Warroch’s Arm",
+    "effect": "Roll 6 Power attribute dice and add the total for one Power action, ignoring disadvantages.",
+    "level": 6,
+    "fated": 1
+  },
+  {
+    "name": "Virimis’s Hand",
+    "effect": "Roll 6 Finesse attribute dice and add the total for one Finesse action, ignoring disadvantages.",
+    "level": 6,
+    "fated": 2
+  },
+  {
+    "name": "Corservus’s Shoulder",
+    "effect": "Roll 6 Resilience attribute dice and add the total for one Resilience action, ignoring disadvantages.",
+    "level": 6,
+    "fated": 3
+  },
+  {
+    "name": "Genivie’s Thought",
+    "effect": "Roll 6 Intellect attribute dice and add the total for one Intellect action, ignoring disadvantages.",
+    "level": 6,
+    "fated": 4
+  },
+  {
+    "name": "Pherynne’s Eye",
+    "effect": "Roll 6 Wits attribute dice and add the total for one Wits action, ignoring disadvantages.",
+    "level": 6,
+    "fated": 5
+  },
+  {
+    "name": "Belia’s Tongue",
+    "effect": "Roll 6 Presence attribute dice and add the total for one Presence action, ignoring disadvantages.",
+    "level": 6,
+    "fated": 6
+  },
+  {
+    "name": "Warroch’s Honour",
+    "effect": "Round the roll total up to the nearest multiple of 5 for any Power action until the next rest.",
+    "level": 6,
+    "fated": 1
+  },
+  {
+    "name": "Virimis’s Technique",
+    "effect": "Add an additional 2d6 to the dice pool of any Finesse roll until the next rest.",
+    "level": 6,
+    "fated": 2
+  },
+  {
+    "name": "Corservus’s Burden",
+    "effect": "Treat all 1s as a value of 10 for any Resilience action until the next rest.",
+    "level": 6,
+    "fated": 3
+  },
+  {
+    "name": "Genivie’s Focus",
+    "effect": "roll four Intellect dice as your dice pool for any Intellect action until the next rest.",
+    "level": 6,
+    "fated": 4
+  },
+  {
+    "name": "Pherynne’s Trust",
+    "effect": "Roll with a +3 bonus and ignore disadvantages for any Wits action until the next rest.",
+    "level": 6,
+    "fated": 5
+  },
+  {
+    "name": "Belia’s Guile",
+    "effect": "Reroll once any 1s or 2s rolled for any Presence action until the next rest.",
+    "level": 6,
+    "fated": 6
+  }
+]

@@ -57,4 +57,4 @@ export function GetDefaultAttributes(): Attribute[] {
       isMental: false,
       isPhysical: true,
     },
-  ].reduce((acc, a) => acc.concat({...a, key:acc.length + 1}), [] as Attribute[]);
+  ].map((a, i) => ({...a, key:i}));

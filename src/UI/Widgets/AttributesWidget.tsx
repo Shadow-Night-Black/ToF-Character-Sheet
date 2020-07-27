@@ -37,6 +37,7 @@ export const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, a
           editMode={editMode}
           attribute={attribute}
           character={state}
+          key={attribute.key}
         />
       ))}
     </tbody>

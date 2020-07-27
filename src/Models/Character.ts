@@ -19,7 +19,7 @@ export function GetAttributeTotal(character: Character, attribute: Attribute, in
   return (
     (character.attributes.get(attribute) || 0) +
     GetAttributeSkillTotal(character, attribute) +
-    (!inCity && character.totem.fated.attribute === attribute ? 6 : 0)
+    (!inCity && character.totem.fated[0]?.attribute === attribute ? 6 : 0)
   );
 }
 
@@ -51,9 +51,10 @@ export function CreateTestCharacter(): Character {
     bio: "test",
     attributes: new Map(GetDefaultAttributes().map((a) => [a, 6])),
     skills: [],
-    totem: { blessings: GetDefaultBlessings(), fated: GetDefaultFated()[0] },
+    totem: { blessings: [], fated: [GetDefaultFated()[0]] },
   };
   defaultSkillsInfo.forEach((x) => char.skills.push(NewSkill(char, x)));
+  char.totem.blessings = GetDefaultBlessings().filter(x => char.totem.fated.includes(x.fated)).slice(0,5);
 
   return char;
 }

@@ -11,11 +11,15 @@ input {
     justify-content: space-between;
 }
 
-// .card-columns {
-//   @include media-breakpoint-only(lg) {
-//     column-count: 4;
-//   }
-// }
+@media (min-width: 576px) {
+.card-columns {
+    column-count: 2;
+  }
+}
+
+.modal-dialog {
+  max-width: 50vw;
+}
 
 
 .Power {
@@ -83,4 +87,8 @@ input {
 
 .blessing-row {
   text-align: center;
+}
+.blessing-add {
+  text-align: center;
+  padding-top: 10px;
 }
