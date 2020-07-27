@@ -1,5 +1,5 @@
 import { Widget, WidgetProps } from './UI/Widgets/Widget';
-import React from 'react';
+import React, { Fragment } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import { Dialog, DialogParams, DialogSection } from './UI/Dialogs/Dialog';
@@ -7,6 +7,8 @@ import { CreateTestCharacter, Character, JsonToCharacter, CharacterToJson } from
 import { AttributeWidgetConstructor } from './UI/Widgets/AttributesWidget';
 import { SkillsWidget } from './UI/Widgets/SkillsWidget';
 import { BlessingsWidget } from './UI/Widgets/TotemWidget';
+import { Sidebar } from './UI/Controls/Sidebar';
+
 
 type AppState = {
   ui: UIState<Character>;
@@ -27,7 +29,11 @@ export type openDialog<T> = (header: DialogSection<T>, body: DialogSection<T>) =
 export type Update<T> = (update: (old: T) => T) => void;
 export type Delete<T> = (update: (old: T) => boolean) => void;
 
+export type SidebarParams = {
+}
+
 export interface UIState<T> {
+  sidebar: SidebarParams;
   dialog: DialogParams<T>;
 }
 
@@ -48,6 +54,8 @@ class App extends React.Component<{}, AppState> {
     this.state = {
       model: model,
       ui: {
+        sidebar: {
+        },
         dialog: {
           isOpen: false,
           body: () => null,
@@ -100,12 +108,15 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     return (
+      <Fragment>
+      <Sidebar {...this.state.ui.sidebar}></Sidebar>
       <div className="App card-columns">
         {Widget(this.WidgetProps(), AttributeWidgetConstructor)}
         {Widget(this.WidgetProps(), SkillsWidget)}
         {Widget(this.WidgetProps(), BlessingsWidget)}
         <Dialog updateUI={this.updateUI} appControls={this.AppControls} dialogState={this.state.ui.dialog} />
       </div>
+</Fragment>
     );
   }
 }
