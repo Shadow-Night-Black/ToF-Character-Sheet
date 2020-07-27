@@ -33,7 +33,7 @@ const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({ state, editMo
           }}
         >
           {GetDefaultFated()
-            .filter((f) => !state.totem.fated.includes(f) || f.key === fated.key)
+            .filter((f) => !state.totem.fated.map(x=>x.key).includes(f.key) || f.key === fated.key)
             .map((f) => <option value={f.key} key={f.key}>{f.name}</option>)
             .concat(RemoveOption)}
         </select>
@@ -47,7 +47,7 @@ const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({ state, editMo
         onClick={() => {
           updateTotem((old) => ({
             ...old,
-            fated: old.fated.concat(GetDefaultFated().filter((x) => !state.totem.fated.includes(x))[0])
+            fated: old.fated.concat(GetDefaultFated().filter((x) => !state.totem.fated.map(x=> x.key).includes(x.key))[0])
           }));
         }}
       >
@@ -94,7 +94,7 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
                 ...old,
                 blessings: old.blessings.concat(
                   GetDefaultBlessings().filter(
-                    (x) => state.totem.fated.includes(x.fated) && !state.totem.blessings.includes(x)
+                    (x) => state.totem.fated.map(x=> x.key).includes(x.fated.key) && !state.totem.blessings.map(x => x.key).includes(x.key)
                   )[0]
                 )
               }));
@@ -128,7 +128,7 @@ function EditBlessingsRow(blessing: Blessing, char: Character, updateTotem: Upda
           }}
         >
           {GetDefaultBlessings()
-            .filter((x) => (char.totem.fated.includes(x.fated) && !char.totem.blessings.includes(x)) || x.key === blessing.key)
+            .filter((x) => (char.totem.fated.map(x => x.key).includes(x.fated.key) && !char.totem.blessings.map(x => x.key).includes(x.key)) || x.key === blessing.key)
             .map((b) => (
               <option value={b.key} key={b.key}>
                 {b.name}

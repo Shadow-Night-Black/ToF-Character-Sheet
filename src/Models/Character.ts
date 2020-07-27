@@ -54,7 +54,7 @@ export function CreateTestCharacter(): Character {
     totem: { blessings: [], fated: [GetDefaultFated()[0]] },
   };
   defaultSkillsInfo.forEach((x) => char.skills.push(NewSkill(char, x)));
-  char.totem.blessings = GetDefaultBlessings().filter(x => char.totem.fated.includes(x.fated)).slice(0,5);
+  char.totem.blessings = GetDefaultBlessings().filter(x => char.totem.fated.map(x => x.key).includes(x.fated.key)).slice(0,5);
 
   return char;
 }
