@@ -17,3 +17,6 @@ export const Dropdown: FunctionComponent<DropdownProps> = ({collection}) => {
 
 function BuildOption(element:selectOption) { 
 return (<option value={element.value} >{element.name}</option>)}
+
+
+export const RemoveOption = <option value={-1} key={-1}> Remove </option>
