@@ -8,8 +8,7 @@ import { AttributeWidgetConstructor } from './UI/Widgets/AttributesWidget';
 import { SkillsWidget } from './UI/Widgets/SkillsWidget';
 import { BlessingsWidget } from './UI/Widgets/TotemWidget';
 import { Sidebar } from './UI/Controls/Sidebar';
-import { Update} from './UI/Interfaces/Lenses';
-
+import { Update } from './UI/Interfaces/Lenses';
 
 type AppState = {
   ui: UIState<Character>;
@@ -26,8 +25,7 @@ export interface AppControls<T> {
 }
 
 export type openDialog<T> = (header: DialogSection<T>, body: DialogSection<T>) => void;
-export type SidebarParams = {
-}
+export type SidebarParams = {};
 
 export interface UIState<T> {
   sidebar: SidebarParams;
@@ -38,21 +36,19 @@ class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
 
-    const savedData= localStorage.getItem('ToF-Model')
+    const savedData = localStorage.getItem('ToF-Model');
     let model = null;
 
     try {
-      model = savedData ? {character: JsonToCharacter( savedData )} : {character: CreateTestCharacter()};
-    }
-    catch {
-      if (!model) model = {character: CreateTestCharacter() };
+      model = savedData ? { character: JsonToCharacter(savedData) } : { character: CreateTestCharacter() };
+    } catch {
+      if (!model) model = { character: CreateTestCharacter() };
     }
 
     this.state = {
       model: model,
       ui: {
-        sidebar: {
-        },
+        sidebar: {},
         dialog: {
           isOpen: false,
           body: () => null,
@@ -93,7 +89,7 @@ class App extends React.Component<{}, AppState> {
 
   AppControls: AppControls<Character> = {
     openDialog: this.openDialog,
-    update: this.updateCharacter,
+    update: this.updateCharacter
   };
 
   WidgetProps: () => WidgetProps<Character> = () => ({
@@ -105,14 +101,14 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <Fragment>
-      <Sidebar {...this.state.ui.sidebar}></Sidebar>
-      <div className="App card-columns">
-        {Widget(this.WidgetProps(), AttributeWidgetConstructor)}
-        {Widget(this.WidgetProps(), SkillsWidget)}
-        {Widget(this.WidgetProps(), BlessingsWidget)}
-        <Dialog updateUI={this.updateUI} appControls={this.AppControls} dialogState={this.state.ui.dialog} />
-      </div>
-</Fragment>
+        <Sidebar {...this.state.ui.sidebar}></Sidebar>
+        <div className="App card-columns">
+          {Widget(this.WidgetProps(), AttributeWidgetConstructor)}
+          {Widget(this.WidgetProps(), SkillsWidget)}
+          {Widget(this.WidgetProps(), BlessingsWidget)}
+          <Dialog updateUI={this.updateUI} appControls={this.AppControls} dialogState={this.state.ui.dialog} />
+        </div>
+      </Fragment>
     );
   }
 }

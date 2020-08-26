@@ -1,8 +1,7 @@
-import * as Dice from "./Dice";
-import { Attribute, GetDefaultAttributes } from "./Attribute";
-import { Character } from "./Character";
-import { Identable, nextId } from "../Helpers/Collections";
-
+import * as Dice from './Dice';
+import { Attribute } from './Attribute';
+import { Character, GetAttributes } from './Character';
+import { Identable, nextId } from '../Helpers/Collections';
 
 export type Skill = Identable & SkillData;
 
@@ -10,19 +9,19 @@ export function ToDie(model: Skill) {
   return Dice.CreateDie(model.level * 2);
 }
 
-export const MaxSkillLevel = 6
-export const MinSkillLevel = 2
+export const MaxSkillLevel = 6;
+export const MinSkillLevel = 2;
 
-export function NewSkill(character: Character, skill?:Partial<SkillData>): Skill {
+export function NewSkill(character: Character, skill?: Partial<SkillData>): Skill {
   return {
-    name: skill?.name ?? "New Skill",
+    name: skill?.name ?? 'New Skill',
     level: skill?.level ?? 2,
-    attribute: skill?.attribute ?? GetDefaultAttributes()[0],
-    key: nextId(character.skills),
+    attribute: skill?.attribute ?? GetAttributes(character)[0],
+    key: nextId(character.skills)
   };
 }
 
-interface SkillData{
+interface SkillData {
   name: string;
   level: number;
   attribute: Attribute;

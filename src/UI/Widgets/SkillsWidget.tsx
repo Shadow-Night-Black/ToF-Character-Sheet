@@ -2,8 +2,8 @@ import React, { FunctionComponent, Fragment } from 'react';
 import { WidgetProps, Widget } from './Widget';
 import { Skill, ToDie, NewSkill, MaxSkillLevel, MinSkillLevel } from '../../Models/Skill';
 import './SkillsWidget.css';
-import { GetDefaultAttributes } from '../../Models/Attribute';
-import { Character, UpdateSkillList } from '../../Models/Character';
+import { Attribute } from '../../Models/Attribute';
+import { Character, UpdateSkillList, GetAttributes } from '../../Models/Character';
 import { ListAccessors, GetCollectionLens } from '../Interfaces/Lenses';
 
 const WidgetHeader: FunctionComponent<WidgetProps<Character>> = () => {
@@ -28,7 +28,11 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
             <th className={'skill-delete'}> </th>
           </tr>
         </thead>
-        <tbody>{state.skills.map((skill) => (editMode ? EditBodyRow(skill, skillLens) : WidgetBodyRow(skill)))}</tbody>
+        <tbody>
+          {state.skills.map((skill) =>
+            editMode ? EditBodyRow(skill, skillLens, GetAttributes(state)) : WidgetBodyRow(skill)
+          )}
+        </tbody>
       </table>
       <div className="skill-add">
         {editMode ? (
@@ -41,7 +45,7 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
   );
 };
 
-function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>): JSX.Element {
+function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, attributes: Attribute[]): JSX.Element {
   return (
     <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
       <td className={`skill-name`}>
@@ -72,11 +76,11 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>): JS
           className="btn"
           defaultValue={skill.attribute.key}
           onChange={(e) => {
-            const newval = GetDefaultAttributes().find((a) => a.key === Number(e.target.value));
+            const newval = attributes.find((a) => a.key === Number(e.target.value));
             if (newval) update(skill, { ...skill, attribute: newval });
           }}
         >
-          {GetDefaultAttributes().map((a) => (
+          {attributes.map((a) => (
             <option value={a.key} key={a.key}>
               {a.name}
             </option>

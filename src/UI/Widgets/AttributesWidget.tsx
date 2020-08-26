@@ -1,37 +1,41 @@
-import { Attribute, GetDefaultAttributes, GetDiceFromAttributeTotal } from "../../Models/Attribute";
-import React, { FunctionComponent, ReactElement, Fragment } from "react";
-import { Character, GetAttributeSkillTotal, GetAttributeTotal } from "../../Models/Character";
-import { Update } from "../Interfaces/Lenses";
-import "./AttributesWidget.css";
-import { Widget, WidgetProps } from "./Widget";
-
+import { Attribute, GetDiceFromAttributeTotal, CharacterAttribute } from '../../Models/Attribute';
+import React, { FunctionComponent, ReactElement, Fragment } from 'react';
+import {
+  Character,
+  GetAttributeSkillTotal,
+  GetAttributeTotal,
+  GetAttributes,
+  GetAttributeBaseValue,
+  UpdateAttributeList
+} from '../../Models/Character';
+import { Update, GetCollectionLens } from '../Interfaces/Lenses';
+import './AttributesWidget.css';
+import { Widget, WidgetProps } from './Widget';
 
 type AttributeRowProps = {
   character: Character;
-  attribute: Attribute;
+  attribute: CharacterAttribute;
   editMode: boolean;
   updateCharacter: Update<Character>;
 };
 
-const WidgetHeader: FunctionComponent<{}> = () => (
-    <h5 className={"modal-title"}>Attributes</h5>
-);
+const WidgetHeader: FunctionComponent<{}> = () => <h5 className={'modal-title'}>Attributes</h5>;
 
-export const className = "attribute-widget";
+export const className = 'attribute-widget';
 
-export const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, appControls: {update}, editMode }) => (
-  <table className='attribute-grid'>
-    <thead className='attribute-header'>
+export const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, appControls: { update }, editMode }) => (
+  <table className="attribute-grid">
+    <thead className="attribute-header">
       <tr>
-        <th className='attribute-title'> Name </th>
-        <th className='attribute-base'> Base </th>
-        <th className='attribute-skills'> Skills </th>
-        <th className='attribute-total'> Total </th>
-        <th className='attribute-dice'> Dice </th>
+        <th className="attribute-title"> Name </th>
+        <th className="attribute-base"> Base </th>
+        <th className="attribute-skills"> Skills </th>
+        <th className="attribute-total"> Total </th>
+        <th className="attribute-dice"> Dice </th>
       </tr>
     </thead>
     <tbody>
-      {GetDefaultAttributes().map((attribute) => (
+      {GetAttributes(state).map((attribute) => (
         <AttributeWidgetRow
           updateCharacter={update}
           editMode={editMode}
@@ -48,31 +52,27 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
   attribute,
   character,
   editMode,
-  updateCharacter,
+  updateCharacter
 }) => {
-  const baseValue = character.attributes.get(attribute);
+  const baseValue = GetAttributeBaseValue(character, attribute);
+  const attributeLens = GetCollectionLens<CharacterAttribute, Character>(UpdateAttributeList, updateCharacter);
   let baseAttributeElement: ReactElement;
   if (editMode)
     baseAttributeElement = (
       <input
-        type='number'
+        type="number"
         defaultValue={baseValue}
         className={`attribute-base`}
         onChange={(event) => {
           const newVal = event.target.valueAsNumber;
-          if (!isNaN(newVal))
-            updateCharacter((oldChar: Character) => {
-              const newAttributes = new Map(oldChar.attributes);
-              newAttributes.set(attribute, newVal);
-              return { ...oldChar, attributes: newAttributes };
-            });
+          if (!isNaN(newVal)) attributeLens.update(attribute, { ...attribute, baseValue: newVal });
         }}
       />
     );
   else baseAttributeElement = <Fragment> {baseValue} </Fragment>;
 
   return (
-    <tr className='attribute-row'>
+    <tr className="attribute-row">
       <td className={`attribute-title ${attribute.name}`}>{attribute.name}</td>
       <td className={`attribute-base ${attribute.name}`}> {baseAttributeElement} </td>
       <td className={`attribute-skills ${attribute.name}`}>{GetAttributeSkillTotal(character, attribute)}</td>
@@ -86,7 +86,7 @@ const AttributeWidgetRow: FunctionComponent<AttributeRowProps> = ({
 };
 
 export const AttributeWidgetConstructor: Widget<Character> = {
-    header: WidgetHeader ,
-    body: WidgetBody,
-    className: "attribute-widget",
-  };
+  header: WidgetHeader,
+  body: WidgetBody,
+  className: 'attribute-widget'
+};

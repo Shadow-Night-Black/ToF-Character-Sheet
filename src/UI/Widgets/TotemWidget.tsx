@@ -2,53 +2,56 @@ import React, { FunctionComponent, Fragment } from 'react';
 import { Widget, WidgetProps } from './Widget';
 import { Character } from '../../Models/Character';
 import { Blessing, GetDefaultBlessings } from '../../Models/Blessings';
-import { Update } from "../Interfaces/Lenses";
-import { Totem } from '../../Models/Totem';
-import { GetDefaultFated } from '../../Models/Fated';
+import { Update, GetCollectionLens } from '../Interfaces/Lenses';
+import { Totem, UpdateFatedList } from '../../Models/Totem';
 import { RemoveOption } from '../Controls/Dropdown';
 
-const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({ state, editMode, appControls: { update } }) => {
+const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({
+  state: { totem },
+  editMode,
+  appControls: { update }
+}) => {
   const updateTotem: Update<Totem> = (t) => update((old) => ({ ...old, totem: t(old.totem) }));
+  const fatedLens = GetCollectionLens(UpdateFatedList, updateTotem);
   const fatedDisplay = editMode
-    ? state.totem.fated.map((fated) => (
-        <select
-          className="btn"
-          key={fated.key}
-          defaultValue={fated.key}
-          onChange={({ target: { value } }) => {
-            const newKey = Number.parseInt(value);
-            if (newKey === -1) {
-              updateTotem((old) => ({
-                ...old,
-                fated: old.fated.filter((x) => x !== fated)
-              }));
-            } else {
-              updateTotem((old) => ({
-                ...old,
-                fated: old.fated.map((x) =>
-                  x.key === fated.key ? GetDefaultFated().find((x) => x.key === Number.parseInt(value))! : x
-                )
-              }));
-            }
-          }}
-        >
-          {GetDefaultFated()
-            .filter((f) => !state.totem.fated.map(x=>x.key).includes(f.key) || f.key === fated.key)
-            .map((f) => <option value={f.key} key={f.key}>{f.name}</option>)
-            .concat(RemoveOption)}
-        </select>
-      ))
-    : state.totem.fated.map((x) => x.name).join('/');
+    ? totem.fated
+        .filter((f) => f.selected)
+        .map((fated) => {
+          return (
+            <select
+              className="btn"
+              key={fated.key}
+              defaultValue={fated.key}
+              onChange={({ target: { value } }) => {
+                const newKey = Number.parseInt(value);
+                const newFated = totem.fated.find((fated) => fated.key === newKey);
+                fatedLens.update(fated, { ...fated, nexusBonus: false, selected: false });
+                if (newFated) fatedLens.update(newFated, { ...newFated, selected: true });
+              }}
+            >
+              {totem.fated
+                .filter((f) => !f.selected || f === fated)
+                .map((f) => (
+                  <option value={f.key} key={f.key}>
+                    {f.name}
+                  </option>
+                ))
+                .concat(RemoveOption)}
+            </select>
+          );
+        })
+    : totem.fated
+        .filter((f) => f.selected)
+        .map((fated) => fated.name)
+        .join('/');
 
   const addButton =
-    editMode && state.totem.fated.length < 3 ? (
+    editMode && totem.fated.filter((f) => f.selected).length < 3 ? (
       <button
         className="btn btn-sm btn-success"
         onClick={() => {
-          updateTotem((old) => ({
-            ...old,
-            fated: old.fated.concat(GetDefaultFated().filter((x) => !state.totem.fated.map(x=> x.key).includes(x.key))[0])
-          }));
+          const newFated = totem.fated.filter((x) => !x.selected)[0];
+          fatedLens.update(newFated, { ...newFated, selected: true });
         }}
       >
         +
@@ -58,7 +61,7 @@ const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({ state, editMo
   return (
     <div className={`header`}>
       <h5 className={'modal-title'}>
-        {`Totem ${state.totem.fated.length > 0 ? ` - ` : ''}`}
+        {`Totem ${totem.fated.length > 0 ? ` - ` : ''}`}
         {fatedDisplay}
         {addButton}
       </h5>
@@ -94,7 +97,9 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
                 ...old,
                 blessings: old.blessings.concat(
                   GetDefaultBlessings().filter(
-                    (x) => state.totem.fated.map(x=> x.key).includes(x.fated.key) && !state.totem.blessings.map(x => x.key).includes(x.key)
+                    (x) =>
+                      state.totem.fated.map((x) => x.key).includes(x.fated.key) &&
+                      !state.totem.blessings.map((x) => x.key).includes(x.key)
                   )[0]
                 )
               }));
@@ -128,7 +133,12 @@ function EditBlessingsRow(blessing: Blessing, char: Character, updateTotem: Upda
           }}
         >
           {GetDefaultBlessings()
-            .filter((x) => (char.totem.fated.map(x => x.key).includes(x.fated.key) && !char.totem.blessings.map(x => x.key).includes(x.key)) || x.key === blessing.key)
+            .filter(
+              (x) =>
+                (char.totem.fated.map((x) => x.key).includes(x.fated.key) &&
+                  !char.totem.blessings.map((x) => x.key).includes(x.key)) ||
+                x.key === blessing.key
+            )
             .map((b) => (
               <option value={b.key} key={b.key}>
                 {b.name}

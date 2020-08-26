@@ -1,11 +1,9 @@
-import { UpdateSkillList } from "../../Models/Character";
-
 export type Update<T> = (update: (old: T) => T) => void;
 export type UpdateMember<Property, Object> = (update: (old: Property) => Property) => (old: Object) => Object;
 
-export type UpdateListItem<T> = (item: T, updated: T) => void
-export type AddListItem<T> = (item: T) => void
-export type RemoveListItem<T> = (item: T) => void
+export type UpdateListItem<T> = (item: T, updated: T) => void;
+export type AddListItem<T> = (item: T) => void;
+export type RemoveListItem<T> = (item: T) => void;
 
 export interface ListAccessors<Property> {
   update: UpdateListItem<Property>;
@@ -15,7 +13,7 @@ export interface ListAccessors<Property> {
 
 export const GetCollectionLens: <Member, Class>(
   map: UpdateMember<Member[], Class>,
-  update:Update<Class>
+  update: Update<Class>
 ) => ListAccessors<Member> = (map, update) => ({
   add: (skill) => update(map((old) => old.concat(skill))),
   update: (skill, updated) => update(map((old) => old.map((s) => (s !== skill ? s : updated)))),
