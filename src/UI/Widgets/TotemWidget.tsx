@@ -2,7 +2,7 @@ import React, { FunctionComponent, Fragment } from 'react';
 import { Widget, WidgetProps } from './Widget';
 import { Character } from '../../Models/Character';
 import { Blessing, GetDefaultBlessings } from '../../Models/Blessings';
-import { Update } from '../../App';
+import { Update } from "../Interfaces/Lenses";
 import { Totem } from '../../Models/Totem';
 import { GetDefaultFated } from '../../Models/Fated';
 import { RemoveOption } from '../Controls/Dropdown';

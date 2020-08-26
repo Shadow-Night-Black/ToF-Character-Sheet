@@ -8,6 +8,7 @@ import { AttributeWidgetConstructor } from './UI/Widgets/AttributesWidget';
 import { SkillsWidget } from './UI/Widgets/SkillsWidget';
 import { BlessingsWidget } from './UI/Widgets/TotemWidget';
 import { Sidebar } from './UI/Controls/Sidebar';
+import { Update} from './UI/Interfaces/Lenses';
 
 
 type AppState = {
@@ -22,13 +23,9 @@ export interface ModelState {
 export interface AppControls<T> {
   openDialog: openDialog<T>;
   update: Update<T>;
-  remove: Delete<T>;
 }
 
 export type openDialog<T> = (header: DialogSection<T>, body: DialogSection<T>) => void;
-export type Update<T> = (update: (old: T) => T) => void;
-export type Delete<T> = (update: (old: T) => boolean) => void;
-
 export type SidebarParams = {
 }
 
@@ -97,7 +94,6 @@ class App extends React.Component<{}, AppState> {
   AppControls: AppControls<Character> = {
     openDialog: this.openDialog,
     update: this.updateCharacter,
-    remove: () => {}
   };
 
   WidgetProps: () => WidgetProps<Character> = () => ({

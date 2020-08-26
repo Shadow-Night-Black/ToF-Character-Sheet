@@ -1,7 +1,7 @@
 import { Attribute, GetDefaultAttributes, GetDiceFromAttributeTotal } from "../../Models/Attribute";
 import React, { FunctionComponent, ReactElement, Fragment } from "react";
 import { Character, GetAttributeSkillTotal, GetAttributeTotal } from "../../Models/Character";
-import { Update} from "../../App";
+import { Update } from "../Interfaces/Lenses";
 import "./AttributesWidget.css";
 import { Widget, WidgetProps } from "./Widget";
 

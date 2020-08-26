@@ -1,10 +1,10 @@
 import React, { FunctionComponent, Fragment } from 'react';
 import { WidgetProps, Widget } from './Widget';
-import { Skill, ToDie, NewSkill } from '../../Models/Skill';
-import { AppControls } from '../../App';
+import { Skill, ToDie, NewSkill, MaxSkillLevel, MinSkillLevel } from '../../Models/Skill';
 import './SkillsWidget.css';
 import { GetDefaultAttributes } from '../../Models/Attribute';
-import { Character } from '../../Models/Character';
+import { Character, UpdateSkillList } from '../../Models/Character';
+import { ListAccessors, GetCollectionLens } from '../Interfaces/Lenses';
 
 const WidgetHeader: FunctionComponent<WidgetProps<Character>> = () => {
   return (
@@ -14,7 +14,8 @@ const WidgetHeader: FunctionComponent<WidgetProps<Character>> = () => {
   );
 };
 
-const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode, appControls }) => {
+const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode, appControls: { update } }) => {
+  const skillLens = GetCollectionLens(UpdateSkillList, update);
   return (
     <Fragment>
       <table className="skill-grid table-condensed">
@@ -27,32 +28,11 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
             <th className={'skill-delete'}> </th>
           </tr>
         </thead>
-        <tbody>
-          {state.skills.map((skill) =>
-            editMode
-              ? EditBodyRow(skill, {
-                  ...appControls,
-                  openDialog: () => null,
-                  remove: (pred) =>
-                    appControls.update((old) => ({ ...old, skills: old.skills.filter((s) => !pred(s)) })),
-                  update: (map) =>
-                    appControls.update((old) => ({
-                      ...old,
-                      skills: old.skills.map((s) => (s !== skill ? s : map(s)))
-                    }))
-                })
-              : WidgetBodyRow(skill)
-          )}
-        </tbody>
+        <tbody>{state.skills.map((skill) => (editMode ? EditBodyRow(skill, skillLens) : WidgetBodyRow(skill)))}</tbody>
       </table>
       <div className="skill-add">
         {editMode ? (
-          <button
-            className="btn btn-sm btn-success"
-            onClick={() => {
-              appControls.update((old) => ({ ...old, skills: old.skills.concat(NewSkill(state)) }));
-            }}
-          >
+          <button className="btn btn-sm btn-success" onClick={() => skillLens.add(NewSkill(state))}>
             Add new skill
           </button>
         ) : null}
@@ -61,7 +41,7 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
   );
 };
 
-function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.Element {
+function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>): JSX.Element {
   return (
     <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
       <td className={`skill-name`}>
@@ -70,23 +50,20 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
           defaultValue={skill.name}
           onBlur={(e) => {
             const val = e.target.value;
-            return update((old) => ({ ...old, name: val }));
+            return update(skill, { ...skill, name: val });
           }}
         ></input>{' '}
       </td>
       <td className="skill-level">
         <input
           type="number"
-          max={6}
-          min={2}
+          max={MaxSkillLevel}
+          min={MinSkillLevel}
           defaultValue={skill.level}
           className={`skill-level`}
           onChange={(event) => {
             const newVal = event.target.valueAsNumber;
-            if (!isNaN(newVal))
-              update((old) => {
-                return { ...old, level: newVal };
-              });
+            if (!isNaN(newVal)) update(skill, { ...skill, level: newVal });
           }}
         />
       </td>
@@ -96,7 +73,7 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
           defaultValue={skill.attribute.key}
           onChange={(e) => {
             const newval = GetDefaultAttributes().find((a) => a.key === Number(e.target.value));
-            if (newval) update((old) => ({ ...old, attribute: newval }));
+            if (newval) update(skill, { ...skill, attribute: newval });
           }}
         >
           {GetDefaultAttributes().map((a) => (
@@ -108,15 +85,7 @@ function EditBodyRow(skill: Skill, { update, remove }: AppControls<Skill>): JSX.
       </td>
       <td className={`skill-dice`}> {ToDie(skill).name} </td>
       <td className={'skill-delete'}>
-        <button
-          type="button"
-          className="btn btn-outline-danger btn-sm btn"
-          onClick={() =>
-            remove((old) => {
-              return old.key === skill.key;
-            })
-          }
-        >
+        <button type="button" className="btn btn-outline-danger btn-sm btn" onClick={() => remove(skill)}>
           x
         </button>
       </td>

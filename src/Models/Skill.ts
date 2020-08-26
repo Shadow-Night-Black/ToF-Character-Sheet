@@ -10,6 +10,9 @@ export function ToDie(model: Skill) {
   return Dice.CreateDie(model.level * 2);
 }
 
+export const MaxSkillLevel = 6
+export const MinSkillLevel = 2
+
 export function NewSkill(character: Character, skill?:Partial<SkillData>): Skill {
   return {
     name: skill?.name ?? "New Skill",
