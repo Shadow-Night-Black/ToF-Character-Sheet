@@ -1,4 +1,4 @@
-import { Attribute, GetDiceFromAttributeTotal, CharacterAttribute } from '../../Models/Attribute';
+import { GetDiceFromAttributeTotal, CharacterAttribute } from '../../Models/Attribute';
 import React, { FunctionComponent, ReactElement, Fragment } from 'react';
 import {
   Character,

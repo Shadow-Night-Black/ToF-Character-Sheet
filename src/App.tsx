@@ -41,8 +41,8 @@ class App extends React.Component<{}, AppState> {
 
     try {
       model = savedData ? { character: JsonToCharacter(savedData) } : { character: CreateTestCharacter() };
-    } catch {
-      if (!model) model = { character: CreateTestCharacter() };
+    } catch (e){
+      model = { character: CreateTestCharacter() };
     }
 
     this.state = {
@@ -101,7 +101,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <Fragment>
-        <Sidebar {...this.state.ui.sidebar}></Sidebar>
+        <Sidebar {...this.state.ui.sidebar} appControls={this.AppControls}></Sidebar>
         <div className="App card-columns">
           {Widget(this.WidgetProps(), AttributeWidgetConstructor)}
           {Widget(this.WidgetProps(), SkillsWidget)}

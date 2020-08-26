@@ -65,7 +65,7 @@ export function CreateTestCharacter(): Character {
     bio: 'test',
     attributes: GetDefaultAttributes().map((a) => ({ ...a, baseValue: 6 })),
     skills: [],
-    totem: { blessings: [], fated: [{ ...GetDefaultFated()[0], nexusBonus: true, selected: true }] }
+    totem: { blessings: [], fated: [ ...GetDefaultFated().map(f => ({...f, nexusBonus: false, selected: false }))] }
   };
   defaultSkillsInfo.forEach((x) => char.skills.push(NewSkill(char, x)));
   char.totem.blessings = GetBlessingsList()
@@ -111,10 +111,11 @@ interface CharacterSaveDataV2 {
 }
 
 export function CharacterToJson(character: Character): string {
-  return JSON.stringify({
-    version: 1,
-    data: character
-  });
+  const saveData: VersionSaveData = {
+    version: 2,
+    character: character
+  };
+  return JSON.stringify(saveData);
 }
 
 export function JsonToCharacter(json: string): Character {
