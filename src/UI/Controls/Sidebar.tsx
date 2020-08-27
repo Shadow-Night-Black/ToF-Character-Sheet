@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCloudDownloadAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.scss';
@@ -8,14 +8,10 @@ import { Character, CreateTestCharacter } from '../../Models/Character';
 export type SidebarProps = {appControls:AppControls<Character>};
 
 export const Sidebar: FunctionComponent<SidebarProps> = ({appControls}) => {
-  const [open, setOpen] = useState(false);
 
   return (
     <nav
-      className={`sidebar navbar-dark bg-dark ${open ? '' : 'sidebar-closed'}`}
-    //   onClick={() => setOpen(!open)}
-      onMouseOver={() => setOpen(true)}
-      onMouseOut={() => setOpen(false)}
+      className={`sidebar navbar-dark bg-dark`}
     >
       <div>
         <FontAwesomeIcon icon={faBars} color={"white"}></FontAwesomeIcon>
