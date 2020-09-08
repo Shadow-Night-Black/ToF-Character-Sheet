@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCloudDownloadAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.scss';
-import { AppControls } from '../Character/Dashboard';
-import { Character, CreateTestCharacter } from '../../Models/Character';
 
 export const Sidebar: FunctionComponent<{}> = () => {
   return (
