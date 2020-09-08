@@ -1,14 +1,13 @@
-import { Widget, WidgetProps } from './UI/Character/Widgets/Widget';
+import { Widget, WidgetProps } from './Widgets/Widget';
 import React, { Fragment } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.scss';
-import { Dialog, DialogParams, DialogSection } from './UI/Character/Dialogs/Dialog';
-import { CreateTestCharacter, Character } from './Models/Character';
-import { JsonToCharacter, CharacterToJson } from "./Models/Helpers/JsonConverter";
-import { AttributeWidgetConstructor } from './UI/Character/Widgets/AttributesWidget';
-import { SkillsWidget } from './UI/Character/Widgets/SkillsWidget';
-import { BlessingsWidget } from './UI/Character/Widgets/TotemWidget';
-import { Update } from './Models/Interfaces/Lenses';
+import { Dialog, DialogParams, DialogSection } from './Dialogs/Dialog';
+import { CreateTestCharacter, Character } from '../../Models/Character';
+import { JsonToCharacter, CharacterToJson } from "../../Models/Helpers/JsonConverter";
+import { AttributeWidgetConstructor } from './Widgets/AttributesWidget';
+import { SkillsWidget } from './Widgets/SkillsWidget';
+import { BlessingsWidget } from './Widgets/TotemWidget';
+import { Update } from '../../Models/Interfaces/Lenses';
 
 type AppState = {
   ui: UIState<Character>;

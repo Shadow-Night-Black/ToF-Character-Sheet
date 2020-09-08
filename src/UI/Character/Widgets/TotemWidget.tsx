@@ -6,6 +6,8 @@ import { Update, GetCollectionLens } from '../../../Models/Interfaces/Lenses';
 import { Totem, UpdateFatedList } from '../../../Models/Totem';
 import { RemoveOption, BuildOption } from '../../Controls/Dropdown';
 
+import './TotemWidget.scss'
+
 const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({
   state: { totem },
   editMode,

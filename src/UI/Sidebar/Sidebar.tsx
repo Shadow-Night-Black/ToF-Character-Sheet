@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCloudDownloadAlt, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.scss';
-import { AppControls } from '../../App';
+import { AppControls } from '../Character/Dashboard';
 import { Character, CreateTestCharacter } from '../../Models/Character';
 
 export const Sidebar: FunctionComponent<{}> = () => {
@@ -32,7 +32,7 @@ export const Sidebar: FunctionComponent<{}> = () => {
         <li>
           Charts
           <ul>
-            <Link to="/dice">
+            <Link to="/charts/dice">
               <li>Dice</li>
             </Link>
           </ul>
