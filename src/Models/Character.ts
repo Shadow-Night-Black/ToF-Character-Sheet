@@ -3,7 +3,7 @@ import { Skill, NewSkill } from './Skill';
 import { Attribute, GetDefaultAttributes, CharacterAttribute } from './Attribute';
 import { GetDefaultFated } from './Fated';
 import { GetDefaultBlessings as GetBlessingsList } from './Blessings';
-import { UpdateMember } from '../UI/Interfaces/Lenses';
+import { UpdateMember } from './Interfaces/Lenses';
 
 export interface Character {
   name: string;

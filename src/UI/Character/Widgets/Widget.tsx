@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { AppControls } from "../../App";
+import { AppControls } from "../../../App";
 import { EditInDialogButton } from "../Dialogs/Dialog";
 
 export interface Widget<T> {

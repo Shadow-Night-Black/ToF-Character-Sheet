@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import CharacterDash from './App';
 import * as serviceWorker from './serviceWorker';
+import { Switch, Route } from 'react-router';
+import { Sidebar } from './UI/Sidebar/Sidebar';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Sidebar />
+      <Switch>
+        <Route path="/dice"></Route>
+        <Route path="/">
+          <CharacterDash />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

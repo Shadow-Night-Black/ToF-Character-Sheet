@@ -1,4 +1,4 @@
-import { GetDiceFromAttributeTotal, CharacterAttribute } from '../../Models/Attribute';
+import { GetDiceFromAttributeTotal, CharacterAttribute } from '../../../Models/Attribute';
 import React, { FunctionComponent, ReactElement, Fragment } from 'react';
 import {
   Character,
@@ -7,8 +7,8 @@ import {
   GetAttributes,
   GetAttributeBaseValue,
   UpdateAttributeList
-} from '../../Models/Character';
-import { Update, GetCollectionLens } from '../Interfaces/Lenses';
+} from '../../../Models/Character';
+import { Update, GetCollectionLens } from '../../../Models/Interfaces/Lenses';
 import './AttributesWidget.css';
 import { Widget, WidgetProps } from './Widget';
 

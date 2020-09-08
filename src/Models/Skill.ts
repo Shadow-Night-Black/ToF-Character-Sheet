@@ -1,7 +1,7 @@
 import * as Dice from './Dice';
 import { Attribute } from './Attribute';
 import { Character, GetAttributes } from './Character';
-import { Identable, nextId } from '../Helpers/Collections';
+import { Identable, nextId } from './Helpers/Collections';
 
 export type Skill = Identable & SkillData;
 

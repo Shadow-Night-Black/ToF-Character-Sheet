@@ -1,15 +1,14 @@
-import { Widget, WidgetProps } from './UI/Widgets/Widget';
+import { Widget, WidgetProps } from './UI/Character/Widgets/Widget';
 import React, { Fragment } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import { Dialog, DialogParams, DialogSection } from './UI/Dialogs/Dialog';
+import { Dialog, DialogParams, DialogSection } from './UI/Character/Dialogs/Dialog';
 import { CreateTestCharacter, Character } from './Models/Character';
-import { JsonToCharacter, CharacterToJson } from "./Helpers/JsonConverter";
-import { AttributeWidgetConstructor } from './UI/Widgets/AttributesWidget';
-import { SkillsWidget } from './UI/Widgets/SkillsWidget';
-import { BlessingsWidget } from './UI/Widgets/TotemWidget';
-import { Sidebar } from './UI/Controls/Sidebar';
-import { Update } from './UI/Interfaces/Lenses';
+import { JsonToCharacter, CharacterToJson } from "./Models/Helpers/JsonConverter";
+import { AttributeWidgetConstructor } from './UI/Character/Widgets/AttributesWidget';
+import { SkillsWidget } from './UI/Character/Widgets/SkillsWidget';
+import { BlessingsWidget } from './UI/Character/Widgets/TotemWidget';
+import { Update } from './Models/Interfaces/Lenses';
 
 type AppState = {
   ui: UIState<Character>;
@@ -102,7 +101,6 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <Fragment>
-        <Sidebar {...this.state.ui.sidebar} appControls={this.AppControls}></Sidebar>
         <div className="App card-columns">
           {Widget(this.WidgetProps(), AttributeWidgetConstructor)}
           {Widget(this.WidgetProps(), SkillsWidget)}

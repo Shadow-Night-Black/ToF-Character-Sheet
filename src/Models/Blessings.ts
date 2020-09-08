@@ -1,5 +1,5 @@
 import { Fated, GetDefaultFated } from "./Fated";
-import { Identable } from "../Helpers/Collections";
+import { Identable } from "./Helpers/Collections";
 import Blessings from "../Data/Blessings.json"
 
 export type Blessing = BlessingData & Identable;

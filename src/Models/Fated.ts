@@ -1,6 +1,6 @@
 import { Attribute, GetDefaultAttributes } from './Attribute';
 import Fateds from '../Data/Fated.json';
-import { Identable } from '../Helpers/Collections';
+import { Identable } from './Helpers/Collections';
 
 export type Fated = FatedData & Identable;
 interface FatedData {

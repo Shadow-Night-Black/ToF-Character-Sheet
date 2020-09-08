@@ -1,5 +1,5 @@
 import * as Dice from './Dice';
-import { Identable } from '../Helpers/Collections';
+import { Identable } from './Helpers/Collections';
 
 export type CharacterAttribute = Attribute & { baseValue: number };
 export type Attribute = Identable & AttributeData;

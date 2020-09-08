@@ -1,6 +1,6 @@
 import { Fated } from './Fated';
 import { Blessing } from './Blessings';
-import { UpdateMember } from '../UI/Interfaces/Lenses';
+import { UpdateMember } from './Interfaces/Lenses';
 
 interface TotemFated extends Fated {
   nexusBonus: boolean;

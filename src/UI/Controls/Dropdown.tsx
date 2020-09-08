@@ -6,17 +6,12 @@ export interface DropdownProps {
 
 type selectOption = {
     name:string,
-    value:number
+    key:number
 }
 
-export const Dropdown: FunctionComponent<DropdownProps> = ({collection}) => {
-    return (<select>
-        {collection.map(BuildOption)}
-    </select>)
-}
 
-function BuildOption(element:selectOption) { 
-return (<option value={element.value} >{element.name}</option>)}
+export function BuildOption(element:selectOption) { 
+return (<option value={element.key} key={element.key}>{element.name}</option>)}
 
 
 export const RemoveOption = <option value={-1} key={-1}> Remove </option>

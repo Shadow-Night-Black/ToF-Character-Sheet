@@ -1,10 +1,10 @@
 import React, { FunctionComponent, Fragment } from 'react';
 import { Widget, WidgetProps } from './Widget';
-import { Character } from '../../Models/Character';
-import { Blessing, GetDefaultBlessings } from '../../Models/Blessings';
-import { Update, GetCollectionLens } from '../Interfaces/Lenses';
-import { Totem, UpdateFatedList } from '../../Models/Totem';
-import { RemoveOption } from '../Controls/Dropdown';
+import { Character } from '../../../Models/Character';
+import { Blessing, GetDefaultBlessings } from '../../../Models/Blessings';
+import { Update, GetCollectionLens } from '../../../Models/Interfaces/Lenses';
+import { Totem, UpdateFatedList } from '../../../Models/Totem';
+import { RemoveOption, BuildOption } from '../../Controls/Dropdown';
 
 const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({
   state: { totem },
@@ -31,11 +31,7 @@ const WidgetHeader: FunctionComponent<WidgetProps<Character>> = ({
             >
               {totem.fated
                 .filter((f) => !f.selected || f === fated)
-                .map((f) => (
-                  <option value={f.key} key={f.key}>
-                    {f.name}
-                  </option>
-                ))
+                .map(BuildOption)
                 .concat(RemoveOption)}
             </select>
           );

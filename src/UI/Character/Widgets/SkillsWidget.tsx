@@ -1,10 +1,10 @@
 import React, { FunctionComponent, Fragment } from 'react';
 import { WidgetProps, Widget } from './Widget';
-import { Skill, ToDie, NewSkill, MaxSkillLevel, MinSkillLevel } from '../../Models/Skill';
+import { Skill, ToDie, NewSkill, MaxSkillLevel, MinSkillLevel } from '../../../Models/Skill';
 import './SkillsWidget.css';
-import { Attribute } from '../../Models/Attribute';
-import { Character, UpdateSkillList, GetAttributes } from '../../Models/Character';
-import { ListAccessors, GetCollectionLens } from '../Interfaces/Lenses';
+import { Attribute } from '../../../Models/Attribute';
+import { Character, UpdateSkillList, GetAttributes } from '../../../Models/Character';
+import { ListAccessors, GetCollectionLens } from '../../../Models/Interfaces/Lenses';
 
 const WidgetHeader: FunctionComponent<WidgetProps<Character>> = () => {
   return (

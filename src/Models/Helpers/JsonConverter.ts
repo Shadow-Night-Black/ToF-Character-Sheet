@@ -1,8 +1,8 @@
-import { Skill } from '../Models/Skill';
-import { GetDefaultAttributes, CharacterAttribute } from '../Models/Attribute';
-import { GetDefaultFated, Fated } from '../Models/Fated';
-import { Blessing } from '../Models/Blessings';
-import { Character } from '../Models/Character';
+import { Skill } from '../Skill';
+import { GetDefaultAttributes, CharacterAttribute } from '../Attribute';
+import { GetDefaultFated, Fated } from '../Fated';
+import { Blessing } from '../Blessings';
+import { Character } from '../Character';
 
 type VersionSaveData = {
   version: 1;

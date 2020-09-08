@@ -1,0 +1,51 @@
+.sidebar {
+  $width: 150px;
+  $closedWidth: 40px;
+
+  position: fixed;
+  width: $width;
+  height: 100vh;
+  color: white;
+
+  .menu-icon {
+    margin-left: $width - 30px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-inline-start: 15px;
+    li {
+      min-width: 100px;
+    }
+  }
+
+  & > ul {
+    padding-top: 15px;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    padding-inline-start: 10px;
+  }
+
+  & > *:first-child {
+    margin-top: 10px;
+  }
+
+  .nav-item {
+    cursor: pointer;
+  }
+
+  left: $closedWidth - $width;
+  transition: left 0.5s;
+
+  & + * {
+    margin-left: $closedWidth;
+    transition: margin-left 0.5s;
+  }
+
+  &:hover {
+    left: 0px;
+    & + * {
+      margin-left: $width;
+    }
+  }
+}

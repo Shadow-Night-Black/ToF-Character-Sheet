@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import "./Dialog.scss";
-import { UIState, AppControls } from "../../App";
-import { Update } from "../Interfaces/Lenses";
+import { UIState, AppControls } from "../../../App";
+import { Update } from "../../../Models/Interfaces/Lenses";
 import { WidgetProps } from "../Widgets/Widget";
 
 type DialogProps<T> = {
