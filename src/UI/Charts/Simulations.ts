@@ -8,14 +8,14 @@ export function Simulation(method: () => number, numberOfSimulation = 10000): Ch
 export function ProbabilitySimulation(method: () => number, numberOfSimulation = 10000): ChartPoint[] {
   const results = simulate(numberOfSimulation, method);
   return ToChartData(results)
-    .reduce(
-      (acc, value, index) => {
-        acc.push({ x: value.x, y: value.y + acc[index].y });
+    .reduceRight(
+      (acc, value) => {
+        acc.push({ x: value.x, y: value.y + acc[acc.length-1].y });
         return acc;
       },
-      [{ x: 0, y: 1 }]
+      [{ x: 0, y: 0 }]
     )
-    .map((p) => ({ x: p.x, y:100 - (100 * p.y) / numberOfSimulation }));
+    .map((p) => ({ x: p.x, y:(100 * p.y) / numberOfSimulation }));
 }
 
 function simulate(numberOfSimulation: number, method: () => number) {
