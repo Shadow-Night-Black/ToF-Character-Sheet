@@ -15,7 +15,7 @@ export function ProbabilitySimulation(method: () => number, numberOfSimulation =
       },
       [{ x: 0, y: 0 }]
     )
-    .map((p) => ({ x: p.x, y:(100 * p.y) / numberOfSimulation }));
+    .map((p) => ({ x: p.x, y:(100 * p.y) / numberOfSimulation })).slice(1);
 }
 
 function simulate(numberOfSimulation: number, method: () => number) {

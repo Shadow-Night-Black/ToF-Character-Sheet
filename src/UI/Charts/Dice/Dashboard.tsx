@@ -12,7 +12,7 @@ export const DiceDashboard: FunctionComponent<{}> = () => {
       {
         label: '3d12',
         fill: false,
-        backgroundColor: 'rgba(75,192,192,0.4)',
+        backgroundColor: 'rgba(195,192,192,1)',
         pointBorderColor: 'rgba(75,192,192,1)',
         pointBackgroundColor: '#fff',
         pointBorderWidth: 1,
