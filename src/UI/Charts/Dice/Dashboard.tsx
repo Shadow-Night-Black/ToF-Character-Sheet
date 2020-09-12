@@ -1,71 +1,66 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Scatter, ChartData } from 'react-chartjs-2';
 import React from 'react';
 import { ProbabilitySimulation } from '../Simulations';
-import { RollPool, CreateDie } from '../../../Models/Dice';
+import { RollPool, CreateDie, Dice, ToString } from '../../../Models/Dice';
 import { ChartOptions } from 'chart.js';
+import { Colour } from '../Colours';
+import { Dataset } from '../Chart';
+import { DicePoolSelector } from './DicePoolSelector';
+import './ChartSelector.scss';
 
 export const DiceDashboard: FunctionComponent<{}> = () => {
+  const redPool = useState([CreateDie(12), CreateDie(12)]);
+  const greenPool = useState(Array<Dice>(3).fill(CreateDie(8)));
+  const bluePool = useState(Array<Dice>(5).fill(CreateDie(6)));
+
+  const pools = [redPool, greenPool, bluePool];
+
   const data: ChartData<Chart.ChartData> = {
     labels: ['Scatter'],
-    datasets: [
-      {
-        label: '3d12',
-        fill: false,
-        backgroundColor: 'rgba(195,192,192,1)',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        cubicInterpolationMode: "monotone",
-        showLine:true,
 
-        data: ProbabilitySimulation(() => RollPool([CreateDie(12), CreateDie(12)]))
-      },
-
-
-      {
-        label: '8d4',
-        fill: false,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        showLine:true,
-        steppedLine:"before",
-
-        data: ProbabilitySimulation(() => RollPool(Array(8).fill(CreateDie(4), 0, 8)))
-      }
-
-    ]
+    datasets: pools.map(([pool], i) =>
+      Dataset(
+        ProbabilitySimulation(() => RollPool(...pool)),
+        {
+          label: ToString(pool),
+          colour: Object.values(Colour)[i]
+        }
+      )
+    )
   };
 
-  const options:ChartOptions = {
-      scales: {
-        yAxes: [{
+  const options: ChartOptions = {
+    scales: {
+      xAxes: [
+        {
+          ticks: {
+            stepSize: 3
+          }
+        }
+      ],
+      yAxes: [
+        {
           ticks: {
             max: 100,
-            min:0,
-            stepSize:10
+            min: 0,
+            stepSize: 10
           }
-        }]
-      }
-  }
+        }
+      ]
+    }
+  };
 
   return (
     <div>
-      <Scatter options={options}  data={data} />
+      <div className="ChartSelector">
+        {pools.map(([pool, update]) => (
+          <DicePoolSelector updateDicePool={update} pool={pool} />
+        ))}
+      </div>
+      <div style={{height:"calc(100vh - 300px)", width:"80vw"}}>
+        <Scatter options={options} data={data} />
+      </div>
     </div>
   );
 };
