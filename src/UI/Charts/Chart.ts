@@ -1,10 +1,10 @@
 import { ChartPoint } from "chart.js";
-import { Colour } from "./Colours";
+import Color from "color";
 
-export function Dataset(data:ChartPoint[], {label = '', colour = Colour.red} = {}):Chart.ChartDataSets {
+export function Dataset(data:ChartPoint[], {label = '', colour = Color("red")} = {}):Chart.ChartDataSets {
     return {
         label:label,
-        borderColor:colour,
+        borderColor:colour.toString(),
         fill:false,
         showLine:true,
         data:data,
