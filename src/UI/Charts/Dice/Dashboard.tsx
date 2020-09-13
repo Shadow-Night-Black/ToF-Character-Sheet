@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { Scatter, ChartData } from 'react-chartjs-2';
 import React from 'react';
 import { ProbabilitySimulation } from '../Simulations';
-import { RollPool, CreateDie,  ToString } from '../../../Models/Dice';
+import { RollPool, CreateDie,  DicePoolToString } from '../../../Models/Dice';
 import { ChartOptions } from 'chart.js';
 import { Dataset } from '../Chart';
 import { DicePoolSelector } from './DicePoolSelector';
@@ -10,17 +10,17 @@ import Color from 'color';
 import './ChartSelector.scss';
 
 export const DiceDashboard: FunctionComponent<{}> = () => {
-  const [pools, updatePools] = useState([[CreateDie(4)], [CreateDie(8)], [CreateDie(12)]])
+  const [getPools, updatePools] = useState([[[CreateDie(4)]], [[CreateDie(8)]], [[CreateDie(12)]]])
 
   const data: ChartData<Chart.ChartData> = {
     labels: ['Scatter'],
 
-    datasets: pools.map((pool, i) =>
+    datasets: getPools.map((pools, i) =>
       Dataset(
-        ProbabilitySimulation(() => RollPool(...pool)),
+        ProbabilitySimulation(() => pools.reduce((acc, p) => acc + RollPool(...p), 0)),
         {
-          label: ToString(pool),
-          colour: Color('red').rotate((i * 360) / pools.length)
+          label: pools.map(p => DicePoolToString(p)).join(" + "),
+          colour: Color('red').rotate((i * 360) / getPools.length)
         }
       )
     )
@@ -58,10 +58,10 @@ export const DiceDashboard: FunctionComponent<{}> = () => {
   return (
     <div>
       <div className="ChartSelector">
-        {pools.map((pool) => (
+        {getPools.map((pool) => (
           <DicePoolSelector
             updateDicePool={(newValue) => {
-              updatePools(pools.map((x) => (x === pool ? newValue : x)));
+              updatePools(getPools.map((x) => (x === pool ? newValue : x)));
             }}
             pool={pool}
           />

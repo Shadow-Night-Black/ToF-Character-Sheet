@@ -1,37 +1,22 @@
 import { FunctionComponent } from 'react';
 import React from 'react';
 import './DicePoolSelector.scss';
-import { Dice, CreateDie } from '../../../Models/Dice';
+import { DicePoolToString, DicePoolFromString, DicePool } from '../../../Models/Dice';
 
 export interface DicePoolSelectorProps {
-  updateDicePool: (pool: Dice[]) => void;
-  pool: Dice[];
+  updateDicePool: (pool: DicePool[]) => void;
+  pool: DicePool[];
 }
 
 export const DicePoolSelector: FunctionComponent<DicePoolSelectorProps> = ({ updateDicePool, pool }) => {
-  const update = ({ value = pool[0].size, number = pool.length }) =>
-    updateDicePool(Array<Dice>(number).fill(CreateDie(value)));
   return (
     <div className="DicePoolSelector">
       <h5>Line 1</h5>
-      <label>Number of Dice</label>
+      <label>Dice Pool</label>
       <input
-        type="number"
-        max="10"
-        defaultValue={pool.length}
+        defaultValue={pool.map(p => DicePoolToString(p)).join(" + ")}
         onInput={(e) => {
-          if (e.target instanceof HTMLInputElement) update({ number: e.target.valueAsNumber });
-        }}
-      ></input>
-      <label>Dice Size</label>
-      <input
-        type="number"
-        max="20"
-        defaultValue={pool[0].size}
-        min="2"
-        step="2"
-        onInput={(e) => {
-          if (e.target instanceof HTMLInputElement) update({ value: e.target.valueAsNumber });
+          if (e.target instanceof HTMLInputElement) updateDicePool(DicePoolFromString(e.target.value));
         }}
       ></input>
     </div>
