@@ -1,9 +1,11 @@
 import { FunctionComponent, useState } from 'react';
-import { Scatter, ChartData } from 'react-chartjs-2';
+import { Scatter, } from 'react-chartjs-2';
 import React from 'react';
 import { ProbabilitySimulation } from '../Simulations';
-import { RollPool, CreateDie,  DicePoolToString } from '../../../Models/Dice';
-import { ChartOptions } from 'chart.js';
+import { RollPool, CreateDie, DicePoolToString } from '../../../Models/Dice';
+import { ChartOptions, ChartData } from 'chart.js';
+//TODO: move to tree shakeable version
+import { Chart } from 'chart.js/auto';
 import { Dataset } from '../Chart';
 import { DicePoolSelector } from './DicePoolSelector';
 import Color from 'color';
@@ -12,7 +14,7 @@ import './ChartSelector.scss';
 export const DiceDashboard: FunctionComponent<{}> = () => {
   const [getPools, updatePools] = useState([[[CreateDie(4)]], [[CreateDie(8)]], [[CreateDie(12)]]])
 
-  const data: ChartData<Chart.ChartData> = {
+  const data: ChartData = {
     labels: ['Scatter'],
 
     datasets: getPools.map((pools, i) =>
@@ -28,30 +30,28 @@ export const DiceDashboard: FunctionComponent<{}> = () => {
 
   const options: ChartOptions = {
     scales: {
-      xAxes: [
-        {
-          scaleLabel: {
-            labelString:"Roll Result",
-            display:true
-          },
-          ticks: {
-            stepSize: 3
-          }
+      x:
+      {
+        title: {
+          text: "Roll Result",
+          display: true
+        },
+        ticks: {
+          stepSize: 3
+        },
+      },
+      y:
+      {
+        title: {
+          text: "P(Result >= X)",
+          display: true
+        },
+        min: 0,
+        max: 100,
+        ticks: {
+          stepSize: 10
         }
-      ],
-      yAxes: [
-        {
-          scaleLabel: {
-            labelString:"P(Result >= X)",
-            display:true
-          },
-          ticks: {
-            max: 100,
-            min: 0,
-            stepSize: 10
-          }
-        }
-      ]
+      }
     }
   };
 
