@@ -1,7 +1,7 @@
 import { Point, ChartDataset } from 'chart.js';
 import Color from 'color';
 
-export function Dataset(data: Point[], { label = '', colour = Color('red') } = {}): ChartDataset {
+export function Dataset(data: Point[], { label = '', colour = Color('red') } = {}):ChartDataset<"scatter", Point[]> {
     return {
         label: label,
         borderColor: colour.toString(),

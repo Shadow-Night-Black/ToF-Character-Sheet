@@ -14,7 +14,7 @@ import './ChartSelector.scss';
 export const DiceDashboard: FunctionComponent<{}> = () => {
   const [getPools, updatePools] = useState([[[CreateDie(4)]], [[CreateDie(8)]], [[CreateDie(12)]]])
 
-  const data: ChartData = {
+  const data = {
     labels: ['Scatter'],
 
     datasets: getPools.map((pools, i) =>
@@ -28,7 +28,7 @@ export const DiceDashboard: FunctionComponent<{}> = () => {
     )
   };
 
-  const options: ChartOptions = {
+  const options = {
     scales: {
       x:
       {
