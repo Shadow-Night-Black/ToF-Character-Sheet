@@ -1,23 +1,22 @@
-import { Fated, GetDefaultFated } from "./Fated";
-import { Identable } from "./Helpers/Collections";
-import Blessings from "../Data/Blessings.json"
+import { Fated, GetDefaultFated } from './Fated';
+import { Identable } from './Helpers/Collections';
+import Blessings from '../Data/Blessings.json';
 
 export type Blessing = BlessingData & Identable;
 export type BlessingData = {
-  name: string;
-  fated: Fated;
-  level: number;
-  effect: string;
+    name: string;
+    fated: Fated;
+    level: number;
+    effect: string;
 };
 
 export function GetDefaultBlessings(): Blessing[] {
-  return defaultBlessings;
+    return defaultBlessings;
 }
 
 const blessingsData = Blessings;
 
-const defaultBlessings = blessingsData.map((x, i) => ({ ...x, fated:GetDefaultFated()[x.fated-1], key: i }));
-
+const defaultBlessings = blessingsData.map((x, i) => ({ ...x, fated: GetDefaultFated()[x.fated - 1], key: i }));
 
 /*
 $once
