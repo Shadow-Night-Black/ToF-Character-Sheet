@@ -1,11 +1,11 @@
-import { ChartPoint } from 'chart.js';
+import { Point } from 'chart.js';
 
-export function Simulation(method: () => number, numberOfSimulation = 10000): ChartPoint[] {
+export function Simulation(method: () => number, numberOfSimulation = 10000): Point[] {
     const results = simulate(numberOfSimulation, method);
     return ToChartData(results).map((p) => ({ x: p.x, y: (100 * p.y) / numberOfSimulation }));
 }
 
-export function ProbabilitySimulation(method: () => number, numberOfSimulation = 10000): ChartPoint[] {
+export function ProbabilitySimulation(method: () => number, numberOfSimulation = 10000): Point[] {
     const results = simulate(numberOfSimulation, method);
     return ToChartData(results)
         .reduceRight(
