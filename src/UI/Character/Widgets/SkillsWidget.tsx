@@ -53,7 +53,7 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
   }
 
   return (
-    <tr className={`skill-row ${skill.attribute.name}`} key={skill.id}>
+    <tr className={`skill-row`} key={skill.id}>
       <td className={`skill-name`}>
         <input
           className="skill-name-input"
@@ -64,35 +64,23 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
           }}
         ></input>{' '}
       </td>
-      <td className="skill-level">
-        <input
-          type="number"
-          max={MaxSkillLevel}
-          min={MinSkillLevel}
-          defaultValue={skill.level}
-          className={`skill-level`}
-          onChange={(event) => {
-            const newVal = event.target.valueAsNumber;
-            updateSkill({ level: newVal });
-          }}
-        />
-      </td>
-      <td className={`skill-attribute`}>
-        <select
-          className="btn"
-          defaultValue={skill.attribute.key}
-          onChange={(e) => {
-            const newval = attributes.find((a) => a.key === Number(e.target.value));
-            if (newval) updateSkill({ attribute: newval });
-          }}
-        >
-          {attributes.map((a) => (
-            <option value={a.key} key={a.key}>
-              {a.name}
-            </option>
-          ))}
-        </select>
-      </td>
+      {attributes.map(a => {
+        return <td className="skill-level">
+          <input
+            type="number"
+            max={MaxSkillLevel}
+            min={MinSkillLevel}
+            defaultValue={skill.attributeLevel(a)}
+            className={`skill-level`}
+            onChange={(event) => {
+              const newVal = event.target.valueAsNumber;
+              const newLevels = new Map(skill.levels)
+              newLevels.set(a.id, newVal)
+              updateSkill({ levels: newLevels});
+            }}
+          />
+        </td>
+      })}
       <td className={`skill-dice`}> {ToDie(skill).name} </td>
       <td className={'skill-delete'}>
         <button type="button" className="btn btn-outline-danger btn-sm btn" onClick={() => remove(skill)}>
@@ -104,10 +92,9 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
 }
 function WidgetBodyRow(skill: Skill): JSX.Element {
   return (
-    <tr className={`skill-row ${skill.attribute.name}`} key={skill.id}>
+    <tr className={`skill-row `} key={skill.id}>
       <td className={`skill-name`}> {skill.name} </td>
-      <td className={`skill-level`}> {skill.level} </td>
-      <td className={`skill-attribute`}> {skill.attribute.name} </td>
+      <td className={`skill-level`}> {skill.totalLevel} </td>
       <td className={`skill-dice`}> {ToDie(skill).name} </td>
       <td className={'skill-delete'}> </td>
     </tr>

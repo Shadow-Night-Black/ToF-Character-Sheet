@@ -26,7 +26,7 @@ export function GetAttributeTotal(character: Character, attribute: Attribute, in
 
 export function GetAttributeSkillTotal(character: Character, attribute: Attribute): number {
     return character.skills.reduce(
-        (total, skill) => total + (skill.attribute.key === attribute.key ? skill.level : 0),
+        (total, skill) => total + skill.attributeLevel(attribute),
         0
     );
 }

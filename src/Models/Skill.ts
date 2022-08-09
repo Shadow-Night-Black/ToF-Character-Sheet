@@ -2,24 +2,24 @@ import * as Dice from './Dice';
 import { Attribute, GetDefaultAttributes } from './Attribute';
 import { Character, GetAttributes } from './Character';
 import { z } from 'zod';
+import { InterfaceType } from 'typescript';
 
-export const SkillValidator = (s: unknown): s is Skill => {
+export const SkillValidator = (s: unknown): s is _skill => {
     const result =   SkillData.safeParse(s)
     return result.success
 };
 
-export function ToDie(model: Skill) {
-    return Dice.CreateDie(model.level * 2);
+export function ToDie(model: _skill) {
+    return Dice.CreateDie(model.totalLevel * 2);
 }
 
 export const MaxSkillLevel = 6;
 export const MinSkillLevel = 2;
 
-export function NewSkill(character: Character, skill?: Partial<SkillData>): Skill {
-    return new Skill({
+export function NewSkill(character: Character, skill?: Partial<SkillData>): _skill {
+    return new _skill({
         name: skill?.name ?? 'New Skill',
-        level: skill?.level ?? 2,
-        attributeId: skill?.attributeId ?? character.attributes[0].id,
+        levels: skill?.levels ?? new Map(),
         id: crypto.randomUUID(),
 
     });
@@ -27,30 +27,34 @@ export function NewSkill(character: Character, skill?: Partial<SkillData>): Skil
 
 export const SkillData = z.object({
     name: z.string(),
-    level: z.number(),
-    attributeId: z.string().uuid(),
+    levels: z.map(z.string().uuid(), z.number()),
     id: z.string().uuid(),
 })
 
 export type SkillData = z.TypeOf<typeof SkillData>
 
-export class Skill implements SkillData {
-    level: number;
+class _skill implements SkillData {
+    levels: Map<string, number>;
     name: string;
-    attributeId: string;
     id: string;
     constructor(data: SkillData) {
         SkillData.parse(data)
         this.name = data.name;
-        this.level = data.level;
-        this.attributeId = data.attributeId
+        this.levels = data.levels;
         this.id = data.id
     }
 
-    get attribute(): Attribute {
-        return GetDefaultAttributes().find(a => a.id === this.attributeId)!
+    get totalLevel() {
+        let total = 0
+        for (const level of this.levels.values()) {
+            total += level
+        }
+        return total;
     }
-    set attribute(attribute: Attribute) {
-        this.attributeId = attribute.id
+
+    attributeLevel(attribute: Attribute) {
+        return this.levels.get(attribute.id) ?? 0;
     }
 }
+
+export type Skill = InstanceType<typeof _skill>;
