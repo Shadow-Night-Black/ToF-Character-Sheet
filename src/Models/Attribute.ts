@@ -9,6 +9,7 @@ interface AttributeData {
     shortName: string;
     isPhysical: boolean;
     isMental: boolean;
+    id: string
 }
 
 export function GetDiceFromAttributeTotal(value: number): Dice.Dice[] {
@@ -59,4 +60,4 @@ const defaults: Attribute[] = [
         isMental: false,
         isPhysical: true,
     },
-].map((a, i) => ({ ...a, key: i }));
+].map((a, i) => ({ ...a, key: i, id:crypto.randomUUID() }));

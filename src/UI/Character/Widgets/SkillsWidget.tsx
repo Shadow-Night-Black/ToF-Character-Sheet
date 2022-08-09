@@ -34,13 +34,13 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
           )}
         </tbody>
       </table>
-      <div className="skill-add">
         {editMode ? (
+      <div className="skill-add">
           <button className="btn btn-sm btn-success" onClick={() => skillLens.add(NewSkill(state))}>
             Add new skill
           </button>
-        ) : null}
       </div>
+        ) : null}
     </Fragment>
   );
 };
@@ -53,7 +53,7 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
   }
 
   return (
-    <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
+    <tr className={`skill-row ${skill.attribute.name}`} key={skill.id}>
       <td className={`skill-name`}>
         <input
           className="skill-name-input"
@@ -104,7 +104,7 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
 }
 function WidgetBodyRow(skill: Skill): JSX.Element {
   return (
-    <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
+    <tr className={`skill-row ${skill.attribute.name}`} key={skill.id}>
       <td className={`skill-name`}> {skill.name} </td>
       <td className={`skill-level`}> {skill.level} </td>
       <td className={`skill-attribute`}> {skill.attribute.name} </td>

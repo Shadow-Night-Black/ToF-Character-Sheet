@@ -1,11 +1,12 @@
 import * as Dice from './Dice';
-import { Attribute } from './Attribute';
+import { Attribute, GetDefaultAttributes } from './Attribute';
 import { Character, GetAttributes } from './Character';
-import { Identable, nextId } from './Helpers/Collections';
+import { z } from 'zod';
 
-export type Skill = Identable & SkillData;
-//TODO implement validator
-export const SkillValidator = (s: any): s is Skill => true;
+export const SkillValidator = (s: unknown): s is Skill => {
+    const result =   SkillData.safeParse(s)
+    return result.success
+};
 
 export function ToDie(model: Skill) {
     return Dice.CreateDie(model.level * 2);
@@ -15,16 +16,41 @@ export const MaxSkillLevel = 6;
 export const MinSkillLevel = 2;
 
 export function NewSkill(character: Character, skill?: Partial<SkillData>): Skill {
-    return {
+    return new Skill({
         name: skill?.name ?? 'New Skill',
         level: skill?.level ?? 2,
-        attribute: skill?.attribute ?? GetAttributes(character)[0],
-        key: nextId(character.skills),
-    };
+        attributeId: skill?.attributeId ?? character.attributes[0].id,
+        id: crypto.randomUUID(),
+
+    });
 }
 
-interface SkillData {
-    name: string;
+export const SkillData = z.object({
+    name: z.string(),
+    level: z.number(),
+    attributeId: z.string().uuid(),
+    id: z.string().uuid(),
+})
+
+export type SkillData = z.TypeOf<typeof SkillData>
+
+export class Skill implements SkillData {
     level: number;
-    attribute: Attribute;
+    name: string;
+    attributeId: string;
+    id: string;
+    constructor(data: SkillData) {
+        SkillData.parse(data)
+        this.name = data.name;
+        this.level = data.level;
+        this.attributeId = data.attributeId
+        this.id = data.id
+    }
+
+    get attribute(): Attribute {
+        return GetDefaultAttributes().find(a => a.id === this.attributeId)!
+    }
+    set attribute(attribute: Attribute) {
+        this.attributeId = attribute.id
+    }
 }
