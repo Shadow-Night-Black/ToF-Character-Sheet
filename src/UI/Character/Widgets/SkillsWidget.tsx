@@ -1,6 +1,6 @@
 import React, { FunctionComponent, Fragment } from 'react';
 import { WidgetProps, Widget } from './Widget';
-import { Skill, ToDie, NewSkill, MaxSkillLevel, MinSkillLevel } from '../../../Models/Skill';
+import { Skill, ToDie, NewSkill, MaxSkillLevel, MinSkillLevel, SkillValidator } from '../../../Models/Skill';
 import './SkillsWidget.css';
 import { Attribute } from '../../../Models/Attribute';
 import { Character, UpdateSkillList, GetAttributes } from '../../../Models/Character';
@@ -46,6 +46,12 @@ const WidgetBody: FunctionComponent<WidgetProps<Character>> = ({ state, editMode
 };
 
 function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, attributes: Attribute[]): JSX.Element {
+  const updateSkill = (newValues: Partial<Skill>) => {
+    const newSkill = { ...skill, ...newValues }
+    if (SkillValidator(newSkill))
+      update(skill, newSkill)
+  }
+
   return (
     <tr className={`skill-row ${skill.attribute.name}`} key={skill.key}>
       <td className={`skill-name`}>
@@ -54,7 +60,7 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
           defaultValue={skill.name}
           onBlur={(e) => {
             const val = e.target.value;
-            return update(skill, { ...skill, name: val });
+            return updateSkill({ name: val });
           }}
         ></input>{' '}
       </td>
@@ -67,7 +73,7 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
           className={`skill-level`}
           onChange={(event) => {
             const newVal = event.target.valueAsNumber;
-            if (!isNaN(newVal)) update(skill, { ...skill, level: newVal });
+            updateSkill({ level: newVal });
           }}
         />
       </td>
@@ -77,7 +83,7 @@ function EditBodyRow(skill: Skill, { update, remove }: ListAccessors<Skill>, att
           defaultValue={skill.attribute.key}
           onChange={(e) => {
             const newval = attributes.find((a) => a.key === Number(e.target.value));
-            if (newval) update(skill, { ...skill, attribute: newval });
+            if (newval) updateSkill({ attribute: newval });
           }}
         >
           {attributes.map((a) => (

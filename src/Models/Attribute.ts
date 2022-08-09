@@ -13,7 +13,8 @@ interface AttributeData {
 
 export function GetDiceFromAttributeTotal(value: number): Dice.Dice[] {
     if (value <= 0) return [Dice.CreateDie(2)];
-    if (value >= 36) return [Dice.CreateDie(20)];
+    if (value >= 54) return [Dice.CreateDie(20)];
+    if (value >= 30) return [Dice.CreateDie(12)];
     return [Dice.CreateDie(2 + Math.floor(value / 6) * 2)];
 }
 
