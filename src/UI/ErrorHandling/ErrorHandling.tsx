@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { isProd } from '../../environment';
 
 export interface ErrorBoundaryProps {}
@@ -7,9 +7,9 @@ interface ErrorBoundaryState {
     error?: Error;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    constructor() {
-        super({});
+export class ErrorBoundary extends React.Component<PropsWithChildren<ErrorBoundaryProps>, ErrorBoundaryState> {
+    constructor(props:ErrorBoundaryProps) {
+        super(props);
         this.state = { hasError: false };
     }
 

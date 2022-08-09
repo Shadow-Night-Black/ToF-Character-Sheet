@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './App.scss';
 import CharacterDash from './UI/Character/Dashboard';
 import * as serviceWorker from './serviceWorker';
@@ -8,7 +8,10 @@ import { Sidebar } from './UI/Sidebar/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import { DiceDashboard } from './UI/Charts/Dice/Dashboard';
 
-ReactDOM.render(
+const root = document.getElementById('root')
+if (root == null) throw new Error("Cannot find root element!")
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
       <Sidebar />
@@ -21,8 +24,7 @@ ReactDOM.render(
         </Route>
       </Switch>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

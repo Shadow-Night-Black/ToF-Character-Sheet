@@ -1,16 +1,24 @@
 import { FunctionComponent, useState } from 'react';
+import {
+    Chart as ChartJS,
+    LinearScale,
+    PointElement,
+    ArcElement,
+    LineElement,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
 import React from 'react';
 import { ProbabilitySimulation } from '../Simulations';
 import { RollPool, CreateDie, DicePoolToString } from '../../../Models/Dice';
-//TODO: move to tree shakeable version
-// eslint-disable-next-line
-import { Chart } from 'chart.js/auto';
 import { Dataset } from '../Chart';
 import { DicePoolSelector } from './DicePoolSelector';
 import Color from 'color';
 import './ChartSelector.scss';
 import { ErrorBoundary } from '../../ErrorHandling/ErrorHandling';
+
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, ArcElement)
 
 export const DiceDashboard: FunctionComponent<{}> = () => {
     const [getPools, updatePools] = useState([[[CreateDie(4)]], [[CreateDie(8)]], [[CreateDie(12)]]]);
@@ -29,7 +37,8 @@ export const DiceDashboard: FunctionComponent<{}> = () => {
         ),
     };
 
-    const options = {
+    const options:Parameters<typeof Scatter>[0]["options"] = {
+        showLine: true,
         scales: {
             x: {
                 title: {
