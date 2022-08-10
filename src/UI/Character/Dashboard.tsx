@@ -38,11 +38,11 @@ class App extends React.Component<{}, AppState> {
     const savedData = localStorage.getItem('ToF-Model');
     let model = null;
 
-    try {
-      model = savedData ? { character: JsonToCharacter(savedData) } : { character: CreateTestCharacter() };
-    } catch (e){
+    // try {
+    //   model = savedData ? { character: JsonToCharacter(savedData) } : { character: CreateTestCharacter() };
+    // } catch (e){
       model = { character: CreateTestCharacter() };
-    }
+    // }
 
     this.state = {
       model: model,

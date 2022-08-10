@@ -70,7 +70,7 @@ export function CreateTestCharacter(): Character {
             fated: [...GetDefaultFated().map((f) => ({ ...f, nexusBonus: false, selected: false }))],
         },
     };
-    defaultSkillsInfo.forEach((x) => char.skills.push(NewSkill(char, x)));
+    defaultSkillsInfo.forEach((x) => char.skills.push(NewSkill(x)));
     char.totem.blessings = GetBlessingsList()
         .filter((b) => char.totem.fated.map((fated) => fated.key).includes(b.fated.key))
         .slice(0, 5);

@@ -1,9 +1,6 @@
 import * as Dice from './Dice';
-import { Attribute, GetDefaultAttributes } from './Attribute';
-import { Character, GetAttributes } from './Character';
+import { Attribute } from './Attribute';
 import { z } from 'zod';
-import { InterfaceType } from 'typescript';
-
 export const SkillValidator = (s: unknown): s is Skill=> {
     const result =   SkillData.safeParse(s)
     return result.success
@@ -14,9 +11,9 @@ export function ToDie(model: Skill) {
 }
 
 export const MaxSkillLevel = 6;
-export const MinSkillLevel = 2;
+export const MinSkillLevel = 1;
 
-export function NewSkill(character: Character, skill?: Partial<SkillData>): Skill{
+export function NewSkill(skill?: Partial<SkillData>): Skill{
     return new Skill({
         name: skill?.name ?? 'New Skill',
         levels: skill?.levels ?? new Map(),
