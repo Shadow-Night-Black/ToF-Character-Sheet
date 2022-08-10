@@ -4,24 +4,23 @@ import { Character, GetAttributes } from './Character';
 import { z } from 'zod';
 import { InterfaceType } from 'typescript';
 
-export const SkillValidator = (s: unknown): s is _skill => {
+export const SkillValidator = (s: unknown): s is Skill=> {
     const result =   SkillData.safeParse(s)
     return result.success
 };
 
-export function ToDie(model: _skill) {
+export function ToDie(model: Skill) {
     return Dice.CreateDie(model.totalLevel * 2);
 }
 
 export const MaxSkillLevel = 6;
 export const MinSkillLevel = 2;
 
-export function NewSkill(character: Character, skill?: Partial<SkillData>): _skill {
-    return new _skill({
+export function NewSkill(character: Character, skill?: Partial<SkillData>): Skill{
+    return new Skill({
         name: skill?.name ?? 'New Skill',
         levels: skill?.levels ?? new Map(),
         id: crypto.randomUUID(),
-
     });
 }
 
@@ -33,7 +32,7 @@ export const SkillData = z.object({
 
 export type SkillData = z.TypeOf<typeof SkillData>
 
-class _skill implements SkillData {
+class Skill implements SkillData {
     levels: Map<string, number>;
     name: string;
     id: string;
@@ -57,4 +56,4 @@ class _skill implements SkillData {
     }
 }
 
-export type Skill = InstanceType<typeof _skill>;
+export type { Skill };
